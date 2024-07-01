@@ -1,3 +1,4 @@
+import 'cypress-mochawesome-reporter/register';
 Cypress.Commands.add("injectPurpleA11yScripts", () => {
     cy.task("getPurpleA11yScripts").then((s: string) => {
         cy.window().then((win) => {

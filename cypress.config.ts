@@ -1,5 +1,6 @@
 import { defineConfig } from "cypress";
 import purpleA11yInit from "purplea11y";
+import mochawesome from 'cypress-mochawesome-reporter/plugin';
 
 interface ViewportSettings {
     width: number;
@@ -24,7 +25,7 @@ const scanAboutMetadata: ScanAboutMetadata = { browser: 'Chrome (Desktop)' };
 
 const purpleA11y = await purpleA11yInit(
     "https://govtechsg.github.io", // initial url to start scan
-    "purplea11y test", // label for test
+    "purplea11y test", // label for test. Update .gitignore accordingly if change
     "PurpleA11y functional test",
     "accessibility@tech.gov.sg",
     true, // include screenshots of affected elements in the report
@@ -39,6 +40,7 @@ export default defineConfig({
     viewportWidth: viewportSettings.width,
     e2e: {
         setupNodeEvents(on, _config) {
+            mochawesome(on);
             on("task", {
                 getPurpleA11yScripts(): string {
                     return purpleA11y.getScripts();
@@ -60,5 +62,12 @@ export default defineConfig({
         },
         supportFile: 'dist/cypress/support/e2e.js',
         specPattern: 'dist/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
+        reporter: 'cypress-mochawesome-reporter',
+        reporterOptions: {
+            reportDir: 'cypress/reports',
+            overwrite: false,
+            html: true,
+            json: true,
+          },
     },
 });
