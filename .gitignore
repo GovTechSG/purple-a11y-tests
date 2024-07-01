@@ -128,3 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# others
+dist
+errors.txt
+results
+*purplea11y_test*
