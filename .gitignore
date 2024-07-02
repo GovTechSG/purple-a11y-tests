@@ -134,4 +134,4 @@ dist
 errors.txt
 results
 *purplea11y_test*
-cypress
+/cypress/*
