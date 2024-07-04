@@ -161,7 +161,7 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
             // TEST CASE: scanData.customFlowLabel should be according to the flag -j
             expect(scanDataDecodedJson.customFlowLabel).to.equal(cliOptionsJson.j);
 
-            // TEST CASE: scanData.pagesScanned should be not contain blacklisted urls according to the flag -x (blacklisted)
+            // TEST CASE: scanData.pagesScanned should not contain blacklisted urls according to the flag -x (blacklisted)
             const blacklistedPatterns = new Set(Cypress.env("blacklistedPatterns"));
             scanDataDecodedJson.pagesScanned.forEach(page => {
                 expect(blacklistedPatterns.has(page.url)).to.be.false;

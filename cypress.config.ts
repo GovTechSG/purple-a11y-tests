@@ -71,58 +71,42 @@ const purpleA11y = await purpleA11yInit(
 );
 
 
-// cli options A, B, C are all the permutations of the cli flags
-
+// cliOptionsJson A, B, C are all the permutations of the cli flags
 const cliOptionsJsonA = {
-    "u": commonCliOptions.u,
+    ...commonCliOptions,
     "d": "Desktop",
-    "o": commonCliOptions.o, 
-    "p": 100, //to vary (105)
-    "h": "no", //yes
-    "b": "chromium", //to vary
+    "p": 105,  
+    "h": "yes", 
+    "b": "chromium", 
     "s": "same-domain",
-    "e": commonCliOptions.e, 
-    "j": commonCliOptions.j,
-    "k": `${name}:${email}`,
     "t": "20",
-    "i": "all",
-    "x": commonCliOptions.x,
-    "a": "screenshots" //need to vary
+    "i": "all", // KIV: need to vary (pdf-only/html-only) for B & C once we are able to create pdfs with accessibility issues
+    "a": "screenshots" // TODO: add check to assert that ss file is not there when -a is none
 }
 
-// const cliOptionsJsonB = {
-//     u: defaultTestUrl,
-//     d: "Mobile",
-//     o: zipName, 
-//     p: 100, //to vary
-//     h: "no",
-//     b: "chrome", //to vary
-//     s: "same-hostname",
-//     // e: 'here', // UNSURE
-//     j: customFlowLabel,
-//     k: `${name}:${email}`,
-//     t: "15",
-//     i: "pdf-only",
-//     "x": blacklistedPatternsFileDir,
-//     a: "none" //need to vary
-// }
+const cliOptionsJsonB = {
+    ...commonCliOptions,
+    "d": "Mobile",
+    "p": 100, 
+    "h": "no",
+    "b": "chrome", 
+    "s": "same-hostname",
+    "t": "15",
+    "i": "all",
+    "a": "none" 
+}
 
-// const cliOptionsJsonC = {
-//     u: defaultTestUrl,
-//     w: 350,
-//     o: zipName, 
-//     p: 90, //to vary
-//     h: "yes",
-//     b: "edge", //to vary
-//     s: "same-domain",
-//     // e: 'here', // UNSURE
-//     j: customFlowLabel,
-//     k: `${name}:${email}`,
-//     t: "10",
-//     i: "html-only",
-//     "x": blacklistedPatternsFileDir,
-//     a: "screenshots" //need to vary
-// }
+const cliOptionsJsonC = {
+    ...commonCliOptions,
+    "w": 350,
+    "p": 90, 
+    "h": "yes",
+    "b": "edge", 
+    "s": "same-domain",
+    "t": "10",
+    "i": "all",
+    "a": "screenshots" 
+}
 
 const purpleA11yPath = "node_modules/purplea11y"
 
@@ -169,7 +153,6 @@ export default defineConfig({
     e2e: {
         setupNodeEvents(on, config) {
             // cypress env variables to use across the project
-            // config.env.cliCommandA = cliCommandA;
             config.env.cliOptionsJsonA = cliOptionsJsonA;
             config.env.purpleA11yPath = purpleA11yPath;
             config.env.blacklistedPatterns = blacklistedPatterns;

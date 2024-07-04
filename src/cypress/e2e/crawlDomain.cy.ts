@@ -1,4 +1,4 @@
-const scanModeCliOptionJson = { "c": "2" }
+const scanModeCliOptionJson = { "c": Cypress.env("crawlDomainCliOption") }
 context("Crawl Domain", () => {
     describe("[Main] Happy flow with cli settings 1", () => {
         let purpleA11yResultFolder;
