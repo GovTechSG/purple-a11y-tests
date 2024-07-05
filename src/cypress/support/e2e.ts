@@ -22,7 +22,8 @@ Cypress.Commands.add("terminatePurpleA11y", () => {
     cy.task("terminatePurpleA11y");
 });
 
-const getCliCommand = (cliOptionsJson) => {
+// toRunInPurpleA11yDirectly argument is used to show cliCommand youd use to run in purpleA11y terminal directly
+export const getCliCommand = (cliOptionsJson, toRunInPurpleA11yDirectly = false) => {
     let command = 'npm run cli --';
     for (const [key, value] of Object.entries(cliOptionsJson)) {
         if (typeof value === 'string') {
@@ -32,7 +33,12 @@ const getCliCommand = (cliOptionsJson) => {
             command += ` -${key} ${value}`;
         }
     }
-    return `cd ${Cypress.env("purpleA11yPath")} && NODE_TLS_REJECT_UNAUTHORIZED=1 ${command}`; // NODE_TLS_REJECT_UNAUTHORIZED=1 env variable prevents a stderr warning caused by cy.exec
+
+    if (toRunInPurpleA11yDirectly) {
+        return command
+    } else {
+        return `cd ${Cypress.env("purpleA11yPath")} && NODE_TLS_REJECT_UNAUTHORIZED=1 ${command}`; // NODE_TLS_REJECT_UNAUTHORIZED=1 env variable prevents a stderr warning caused by cy.exec
+    }
 };
 
 const base64Decode = (data) => {
@@ -49,16 +55,16 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
     return cy.exec(cliCommand, { failOnNonZeroExit: false, timeout: 300000 })
         .then((result) => {
 
-            // TEST CASE: scan process complete successfully and result directory is printed in stdout
+            // TEST CASE: scan process complete successfully
             expect(result.stderr).to.be.empty;
+
             const purpleA11yResultsPathRegex = result.stdout.match(/Results directory is at (\S+)/);
+
+            // TEST CASE: result directory is printed in stdout
+            expect(purpleA11yResultsPathRegex).to.be.ok;
+
             let purpleA11yResultsPath;
-            if (purpleA11yResultsPathRegex) {
-                purpleA11yResultsPath = purpleA11yResultsPathRegex[1];
-            }
-            else {
-                expect.fail("Result path not found in stdout");
-            }
+            purpleA11yResultsPath = purpleA11yResultsPathRegex[1];
             const lastSlashIndex = purpleA11yResultsPath.lastIndexOf('/');
             purpleA11yExportDir = purpleA11yResultsPath.substring(0, lastSlashIndex);
             purpleA11yResultFolder = purpleA11yResultsPath.substring(lastSlashIndex + 1);
@@ -131,8 +137,8 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 case '4':
                     expectedScanType = 'Intelligent';
                     break;
-                case '4':
-                    expectedScanType = 'Localfile';
+                case '5':
+                    expectedScanType = 'LocalFile';
                     break;
                 default:
                     throw new Error(`Unexpected cliOptionsJson.c value: ${cliOptionsJson.c}`);
@@ -152,7 +158,7 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
             if (cliOptionsJson.d){
                 expect(scanDataDecodedJson.viewport).to.equal(cliOptionsJson.d);
             } else if (cliOptionsJson.w){
-                expect(scanDataDecodedJson.viewport).to.equal(cliOptionsJson.w); //TODO: check if scandata is string or number
+                expect(scanDataDecodedJson.viewport).to.equal(`CustomWidth_${cliOptionsJson.w}px`); //TODO: check if scandata is string or number
             }
 
             // TEST CASE: scanData.totalPagesScanned should be <= to the flag -p. 
@@ -162,12 +168,15 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
             expect(scanDataDecodedJson.customFlowLabel).to.equal(cliOptionsJson.j);
 
             // TEST CASE: scanData.pagesScanned should not contain blacklisted urls according to the flag -x (blacklisted)
-            const blacklistedPatterns = new Set(Cypress.env("blacklistedPatterns"));
+            // TEST CASE: scanData.pagesScanned should not contain certain links according to the flag -s (strategy)
+            const blacklistedPatternsSet = new Set(Cypress.env("blacklistedPatterns"));
+            const urlsWithDiffHostnameSet = new Set(Cypress.env("diffHostnameUrl"));
             scanDataDecodedJson.pagesScanned.forEach(page => {
-                expect(blacklistedPatterns.has(page.url)).to.be.false;
-              });
+                expect(blacklistedPatternsSet.has(page.url)).to.be.false;
+                (cliOptionsJson.s == "same-hostname") ? expect(urlsWithDiffHostnameSet.has(page.url)).to.be.false : undefined;
+            });
 
-            // TEST CASE: scanData.pagesScanned should not have any duplicates [TODO: add more url to home page etc]
+            // TEST CASE: scanData.pagesScanned should not have any duplicates
             cy.wrap(scanDataDecodedJson.pagesScanned).then(pagesScanned => {
                 const urls = pagesScanned.map(page => page.url);
                 const uniqueUrls = new Set(urls);
@@ -183,10 +192,14 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                     });
                 });
             }
-        });
-});
 
-    // [WIP] TEST CASE: scanData.pagesScanned should be according to the flag -s (strategy)
+
+
+
+
+        });
+    });
+
 
 
 

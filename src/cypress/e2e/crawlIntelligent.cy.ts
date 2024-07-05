@@ -1,12 +1,12 @@
 import { getCliCommand } from '../support/e2e';
 
-const constantCliOptionsJson = { "c": Cypress.env("crawlDomainCliOption"), "u": Cypress.env("mainTestHomePageUrl") }
+const constantCliOptionsJson = { "c": Cypress.env("crawlIntelligentCliOption"), "u": Cypress.env("mainTestHomePageUrl") }
 
 // Main A B C is the testcase for happy flow, where cliOptionsJson A B C are all the permutations of the cli flags 
-context("Crawl Domain", () => {
-    const cliOptionsJsonA = { ...Cypress.env("cliOptionsJsonA"), ...constantCliOptionsJson, "s": "same-domain" }
-    const cliOptionsJsonB = { ...Cypress.env("cliOptionsJsonB"), ...constantCliOptionsJson, "s": "same-hostname" }
-    const cliOptionsJsonC = { ...Cypress.env("cliOptionsJsonC"), ...constantCliOptionsJson, "s": "same-domain" }
+context("Crawl Intelligent", () => {
+    const cliOptionsJsonA = { ...Cypress.env("cliOptionsJsonA"), ...constantCliOptionsJson }
+    const cliOptionsJsonB = { ...Cypress.env("cliOptionsJsonB"), ...constantCliOptionsJson }
+    const cliOptionsJsonC = { ...Cypress.env("cliOptionsJsonC"), ...constantCliOptionsJson }
 
     describe(`[Main A] ${getCliCommand(cliOptionsJsonA, true)}`, () => {
         let purpleA11yResultFolder;

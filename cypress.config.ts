@@ -50,8 +50,13 @@ const scanModeCliOption = {
     "crawlLocalFile": "5",
 }
 
+const diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test/"
+const mainTestHomePageUrl = "https://leeyixuan21.github.io"
+const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`
+const mainTestSitemapRssUrl = `${mainTestHomePageUrl}/sitemap.rss`
+const mainTestSitemapAtomUrl = `${mainTestHomePageUrl}/sitemap.atom`
+
 const commonCliOptions = {
-    "u": "https://leeyixuan21.github.io",
     "o": "purple_a11y_test",
     "e": `${getProjectRootDirectory()}/purpleA11yResults`, 
     "j": "purple a11y test label",
@@ -59,8 +64,15 @@ const commonCliOptions = {
     "x": `${getProjectRootDirectory()}/blacklistedPatterns.txt`
 }
 
+const localFilesFolderDirectory = `${getProjectRootDirectory()}/localFilesForTesting`
+const localHtmlFileDirectory = `${localFilesFolderDirectory}/a.html`
+const localHtmFileDirectory = `${localFilesFolderDirectory}/b.htm`
+const localXhtmlFileDirectory = `${localFilesFolderDirectory}/c.xhtml`
+const localXmlFileDirectory = `${localFilesFolderDirectory}/d.xml`
+const localTxtFileDirectory = `${localFilesFolderDirectory}/e.txt`
+
 const purpleA11y = await purpleA11yInit(
-    commonCliOptions.u, // initial url to start scan
+    mainTestHomePageUrl, // initial url to start scan
     "purplea11y test", // label for test. Update gitignore accordingly if change
     name,
     email,
@@ -75,10 +87,9 @@ const purpleA11y = await purpleA11yInit(
 const cliOptionsJsonA = {
     ...commonCliOptions,
     "d": "Desktop",
-    "p": 105,  
+    "p": 3,  //120
     "h": "yes", 
     "b": "chromium", 
-    "s": "same-domain",
     "t": "20",
     "i": "all", // KIV: need to vary (pdf-only/html-only) for B & C once we are able to create pdfs with accessibility issues
     "a": "screenshots" // TODO: add check to assert that ss file is not there when -a is none
@@ -87,10 +98,9 @@ const cliOptionsJsonA = {
 const cliOptionsJsonB = {
     ...commonCliOptions,
     "d": "Mobile",
-    "p": 100, 
+    "p": 3, //110
     "h": "no",
     "b": "chrome", 
-    "s": "same-hostname",
     "t": "15",
     "i": "all",
     "a": "none" 
@@ -99,10 +109,9 @@ const cliOptionsJsonB = {
 const cliOptionsJsonC = {
     ...commonCliOptions,
     "w": 350,
-    "p": 90, 
+    "p": 3, //100
     "h": "yes",
     "b": "edge", 
-    "s": "same-domain",
     "t": "10",
     "i": "all",
     "a": "screenshots" 
@@ -139,11 +148,11 @@ const getBlackListedPatterns = (blacklistedPatternsFilename: string|null): strin
 
   // urls that must be scanned to verify that crawl domain's customEnqueueLinksByClickingElements & enqueueLinks functions work
   const crawlDomainEnqueueProcessUrls = [
-    `${commonCliOptions.u}/2.html`,
-    `${commonCliOptions.u}/3.html`,
-    `${commonCliOptions.u}/4.html`,
-    `${commonCliOptions.u}/5.html`,
-    `${commonCliOptions.u}/6.html`,
+    `${mainTestHomePageUrl}/2.html`,
+    `${mainTestHomePageUrl}/3.html`,
+    `${mainTestHomePageUrl}/4.html`,
+    `${mainTestHomePageUrl}/5.html`,
+    `${mainTestHomePageUrl}/6.html`,
 ];
 
 export default defineConfig({
@@ -154,6 +163,8 @@ export default defineConfig({
         setupNodeEvents(on, config) {
             // cypress env variables to use across the project
             config.env.cliOptionsJsonA = cliOptionsJsonA;
+            config.env.cliOptionsJsonB = cliOptionsJsonB;
+            config.env.cliOptionsJsonC = cliOptionsJsonC;
             config.env.purpleA11yPath = purpleA11yPath;
             config.env.blacklistedPatterns = blacklistedPatterns;
             config.env.crawlDomainEnqueueProcessUrls = crawlDomainEnqueueProcessUrls;
@@ -161,8 +172,21 @@ export default defineConfig({
             config.env.crawlSitemapCliOption = scanModeCliOption.crawlSitemap;
             config.env.customFlowCliOption = scanModeCliOption.customFlow;
             config.env.crawlIntelligentCliOption = scanModeCliOption.crawlIntelligent;
-            config.env.CrawlLocalFileCliOption = scanModeCliOption.crawlLocalFile;
-            
+            config.env.crawlLocalFileCliOption = scanModeCliOption.crawlLocalFile;
+            config.env.diffHostnameUrl = diffHostnameUrl;
+            config.env.mainTestHomePageUrl = mainTestHomePageUrl;
+            config.env.mainTestSitemapXmlUrl = mainTestSitemapXmlUrl;
+            config.env.mainTestSitemapRssUrl = mainTestSitemapRssUrl;
+            config.env.mainTestSitemapAtomUrl = mainTestSitemapAtomUrl;
+            config.env.IT_RUN_SCAN = "Process should complete & generate result files";
+            config.env.IT_CHECK_SCANDATA = "scanData in report.html should correspond to cli command flags";
+            config.env.localHtmlFileDirectory = localHtmlFileDirectory;
+            config.env.localHtmFileDirectory = localHtmFileDirectory;
+            config.env.localXhtmlFileDirectory = localXhtmlFileDirectory;
+            config.env.localXmlFileDirectory = localXmlFileDirectory;
+            config.env.localTxtFileDirectory = localTxtFileDirectory;
+
+
 
             mochawesome(on);
             on("task", {

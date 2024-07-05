@@ -4,7 +4,7 @@ Functional tests for Purple A11y
 ## How to run
 ```
 npm install
-npx tsc
+npm run build
 npx cypress run
 ```
 After `npx cypress run`, find generated cypress report under /cypress/reports/index.html from project root directory.  
