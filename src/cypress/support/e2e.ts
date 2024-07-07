@@ -56,12 +56,12 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
         .then((result) => {
 
             // TEST CASE: scan process complete successfully
-            expect(result.stderr, "stderr occurred after running Purple A11y process").to.be.empty;
+            expect(result.stderr, "stderr should be empty after Purple A11y process complete successfully").to.be.empty;
 
             const purpleA11yResultsPathRegex = result.stdout.match(/Results directory is at (\S+)/);
 
             // TEST CASE: result directory is printed in stdout
-            expect(purpleA11yResultsPathRegex, "Purple A11y results directory cannot be found in the stdout after process completion").to.be.ok;
+            expect(purpleA11yResultsPathRegex, "result directory should be printed in stdout").to.be.ok;
 
             let purpleA11yResultsPath;
             purpleA11yResultsPath = purpleA11yResultsPathRegex[1];
@@ -72,12 +72,12 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
             // TEST CASE: result zip created & naming is based on the flag -o
             return cy.task('checkFileExist', `${Cypress.env("purpleA11yPath")}/${cliOptionsJson.o}.zip`)
         }).then((exists) => {
-            expect(exists, `result zip file is not created`).to.be.true;
+            expect(exists, `result zip should be created & naming should be based on the flag -o`).to.be.true;
 
-            // TEST CASE: result folder is created at path based on the flag -e
+            // TEST CASE: result folder is created at directory based on the flag -e
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}`)
         }).then((exists) => {
-            expect(exists, `result folder is not created at path based on the flag -e`).to.be.true;
+            expect(exists, `result folder should be created at directory based on the flag -e`).to.be.true;
 
             // TEST CASE: screenshot folder is created based on flag -a
             if (cliOptionsJson.a == "screenshots") {
@@ -88,28 +88,28 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
 
         }).then((exists) => {
             if (cliOptionsJson.a === "screenshots") {
-                expect(exists, `screenshot folder is not created based on flag -a`).to.be.true;
+                expect(exists, `screenshot folder should be created based on flag -a`).to.be.true;
             }
 
             // TEST CASE: report.csv is created 
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}/report.csv`)
         }).then((exists) => {
-            expect(exists, `report.csv is not created`).to.be.true;
+            expect(exists, `report.csv should be created`).to.be.true;
 
             // TEST CASE: report.html is created 
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}/report.html`);
         }).then((exists) => {
-            expect(exists, `report.html is not created`).to.be.true;
+            expect(exists, `report.html should be created`).to.be.true;
 
             // TEST CASE: scanDetails.csv is created 
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}/scanDetails.csv`);
         }).then((exists) => {
-            expect(exists, `scanDetails.csv is not created`).to.be.true;
+            expect(exists, `scanDetails.csv should be created`).to.be.true;
 
             // TEST CASE: summary.pdf is created 
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}/summary.pdf`);
         }).then((exists) => {
-            expect(exists, `summary.pdf is not created`).to.be.true;
+            expect(exists, `summary.pdf should be created`).to.be.true;
 
             return purpleA11yResultFolder;
         });
