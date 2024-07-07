@@ -12,7 +12,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "purplea11y": "git+https://github.com/GovTechSG/purple-a11y.git"
+    "purplea11y": "git+https://github.com/GovTechSG/purple-a11y.git#fix/intelligent-duplicate-url"
   },
   "devDependencies": {
     "@types/cypress": "^1.1.3",

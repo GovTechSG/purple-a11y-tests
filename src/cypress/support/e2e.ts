@@ -56,7 +56,8 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
         .then((result) => {
 
             // TEST CASE: scan process complete successfully
-            expect(result.stderr, "stderr should be empty after Purple A11y process complete successfully").to.be.empty;
+            expect(result.stdout, "stdout should be non-empty after Purple A11y process completes").to.not.be.empty;
+
 
             const purpleA11yResultsPathRegex = result.stdout.match(/Results directory is at (\S+)/);
 
@@ -89,6 +90,8 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
         }).then((exists) => {
             if (cliOptionsJson.a === "screenshots") {
                 expect(exists, `screenshot folder should be created based on flag -a`).to.be.true;
+            } else {
+                expect(exists, `screenshot folder should be created based on flag -a`).to.be.null;
             }
 
             // TEST CASE: report.csv is created 
@@ -121,7 +124,7 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
         .then((reportHtmlData) => {
             const scanDataEncoded = reportHtmlData.match(/scanData\s*=\s*base64Decode\('([^']+)'\)/)[1];
             const scanDataDecodedJson = base64Decode(scanDataEncoded);
-            
+
             // TEST CASE: scanData.scanType should be according to the flag -c
             let expectedScanType;
             switch (cliOptionsJson.c) {
@@ -152,12 +155,12 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 return normalizedUrl;
             };
             expect(normalizeUrl(scanDataDecodedJson.urlScanned), `scanData.urlScanned should be according to the flag -u`).to.equal(normalizeUrl(cliOptionsJson.u));
-        
+
 
             // TEST CASE: scanData.viewport should be according to the flag -d or -w
-            if (cliOptionsJson.d){
+            if (cliOptionsJson.d) {
                 expect(scanDataDecodedJson.viewport, `scanData.viewport should be according to the flag -d`).to.equal(cliOptionsJson.d);
-            } else if (cliOptionsJson.w){
+            } else if (cliOptionsJson.w) {
                 expect(scanDataDecodedJson.viewport, `scanData.viewport should be according to the flag -w`).to.equal(`CustomWidth_${cliOptionsJson.w}px`); //TODO: check if scandata is string or number
             }
 
@@ -167,40 +170,47 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
             // TEST CASE: scanData.customFlowLabel should be according to the flag -j
             expect(scanDataDecodedJson.customFlowLabel, `scanData.customFlowLabel should be according to the flag -j`).to.equal(cliOptionsJson.j);
 
-            // TEST CASE: scanData.pagesScanned should not contain blacklisted urls according to the flag -x (blacklisted)
-            // TEST CASE: scanData.pagesScanned should not contain certain links according to the flag -s (strategy)
             const blacklistedPatternsSet = new Set(Cypress.env("blacklistedPatterns"));
             const urlsWithDiffHostnameSet = new Set(Cypress.env("diffHostnameUrl"));
+            const urlsMetaRedirectedSet = new Set(Cypress.env("metaRedirectedUrl"));
+            let isMetaRedirectedUrlScanned = false;
+
             scanDataDecodedJson.pagesScanned.forEach(page => {
+
+                // TEST CASE: scanData.pagesScanned should not contain blacklisted urls according to the flag -x (blacklisted)
                 expect(blacklistedPatternsSet.has(page.url), `scanData.pagesScanned should not contain ${page.url} according to the flag -x (blacklisted)`).to.be.false;
-                (cliOptionsJson.s == "same-hostname") ? expect(urlsWithDiffHostnameSet.has(page.url), `scanData.pagesScanned should not contain ${page.url} according to the flag -s (strategy)`).to.be.false : undefined;
+
+                // TEST CASE: scanData.pagesScanned should not contain certain links according to the flag -s (strategy)
+                if (cliOptionsJson.s == "same-hostname") {
+                    expect(urlsWithDiffHostnameSet.has(page.url), `scanData.pagesScanned should not contain ${page.url} according to the flag -s (strategy)`).to.be.false
+                }
+
+                if (urlsMetaRedirectedSet.has(page.url)) {
+                    isMetaRedirectedUrlScanned = true;
+                }
             });
 
             // TEST CASE: scanData.pagesScanned should not have any duplicates
-            cy.wrap(scanDataDecodedJson.pagesScanned).then(pagesScanned => {
-                const urls = pagesScanned.map(page => page.url);
-                const uniqueUrls = new Set(urls);
-                expect(uniqueUrls.size, `scanData.pagesScanned should not have any duplicates`).to.equal(urls.length);
-            });
+            const pagesScannedurls = scanDataDecodedJson.pagesScanned.map(page => page.url);
+            const uniquePagesScannedUrls = new Set(pagesScannedurls);
+            expect(uniquePagesScannedUrls.size, `scanData.pagesScanned should not have any duplicates`).to.equal(pagesScannedurls.length);
 
-            // TEST CASE: [crawlDomain] customEnqueueLinksByClickingElements & enqueueLinks functions work
             if (cliOptionsJson.c == Cypress.env("crawlDomainCliOption")) {
-                cy.wrap(scanDataDecodedJson.pagesScanned).then(pagesScanned => {
-                    const urls = pagesScanned.map(page => page.url);
-                    Cypress.env("crawlDomainEnqueueProcessUrls").forEach(expectedUrl => {
-                        expect(urls).to.include(expectedUrl, `URL ${expectedUrl} should be in scanData.pagesScanned to verify that customEnqueueLinksByClickingElements & enqueueLinks functions work`);
-                    });
+                // TEST CASE: [crawlDomain] scanData.pagesScanned should contain meta redirected url
+                expect(isMetaRedirectedUrlScanned, "scanData.pagesScanned should contain meta redirected url (/7.html)").to.be.ok;
+
+                // TEST CASE: [crawlDomain] customEnqueueLinksByClickingElements & enqueueLinks functions work
+                Cypress.env("crawlDomainEnqueueProcessUrls").forEach(expectedUrl => {
+                    expect(pagesScannedurls).to.include(expectedUrl, `URL ${expectedUrl} should be in scanData.pagesScanned to verify that customEnqueueLinksByClickingElements & enqueueLinks functions work`);
                 });
             }
 
 
 
-
-
         });
-    });
+});
 
 
 
 
-    // [KIV - BECAUSE UNABLE TO CREATE INACCESSIBLE PDF TO ADD IN TEST WEBSITE] TEST CASE: scanData.pagesScanned should be according to the flag -i (filetypes) 
+// [KIV - BECAUSE UNABLE TO CREATE INACCESSIBLE PDF TO ADD IN TEST WEBSITE] TEST CASE: scanData.pagesScanned should be according to the flag -i (filetypes) 

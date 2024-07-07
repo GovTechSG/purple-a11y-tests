@@ -50,11 +50,13 @@ const scanModeCliOption = {
     "crawlLocalFile": "5",
 }
 
+//urls
 const diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test/"
 const mainTestHomePageUrl = "https://leeyixuan21.github.io"
 const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`
 const mainTestSitemapRssUrl = `${mainTestHomePageUrl}/sitemap.rss`
 const mainTestSitemapAtomUrl = `${mainTestHomePageUrl}/sitemap.atom`
+const metaRedirectedUrl = `${mainTestHomePageUrl}/7.html`
 
 const commonCliOptions = {
     "o": "purple_a11y_test",
@@ -87,7 +89,7 @@ const purpleA11y = await purpleA11yInit(
 const cliOptionsJsonA = {
     ...commonCliOptions,
     "d": "Desktop",
-    "p": 3,  //120
+    "p": 120,  //120
     "h": "yes", 
     "b": "chromium", 
     "t": "20",
@@ -98,7 +100,7 @@ const cliOptionsJsonA = {
 const cliOptionsJsonB = {
     ...commonCliOptions,
     "d": "Mobile",
-    "p": 3, //110
+    "p": 110, //110
     "h": "no",
     "b": "chrome", 
     "t": "15",
@@ -109,7 +111,7 @@ const cliOptionsJsonB = {
 const cliOptionsJsonC = {
     ...commonCliOptions,
     "w": 350,
-    "p": 3, //100
+    "p": 100, //100
     "h": "yes",
     "b": "edge", 
     "t": "10",
@@ -174,6 +176,7 @@ export default defineConfig({
             config.env.crawlIntelligentCliOption = scanModeCliOption.crawlIntelligent;
             config.env.crawlLocalFileCliOption = scanModeCliOption.crawlLocalFile;
             config.env.diffHostnameUrl = diffHostnameUrl;
+            config.env.metaRedirectedUrl = metaRedirectedUrl;
             config.env.mainTestHomePageUrl = mainTestHomePageUrl;
             config.env.mainTestSitemapXmlUrl = mainTestSitemapXmlUrl;
             config.env.mainTestSitemapRssUrl = mainTestSitemapRssUrl;
