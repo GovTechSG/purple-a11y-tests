@@ -56,12 +56,12 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
         .then((result) => {
 
             // TEST CASE: scan process complete successfully
-            expect(result.stderr).to.be.empty;
+            expect(result.stderr, "stderr occurred after running Purple A11y process").to.be.empty;
 
             const purpleA11yResultsPathRegex = result.stdout.match(/Results directory is at (\S+)/);
 
             // TEST CASE: result directory is printed in stdout
-            expect(purpleA11yResultsPathRegex).to.be.ok;
+            expect(purpleA11yResultsPathRegex, "Purple A11y results directory cannot be found in the stdout after process completion").to.be.ok;
 
             let purpleA11yResultsPath;
             purpleA11yResultsPath = purpleA11yResultsPathRegex[1];
@@ -72,12 +72,12 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
             // TEST CASE: result zip created & naming is based on the flag -o
             return cy.task('checkFileExist', `${Cypress.env("purpleA11yPath")}/${cliOptionsJson.o}.zip`)
         }).then((exists) => {
-            expect(exists).to.be.true;
+            expect(exists, `result zip file is not created`).to.be.true;
 
             // TEST CASE: result folder is created at path based on the flag -e
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}`)
         }).then((exists) => {
-            expect(exists).to.be.true;
+            expect(exists, `result folder is not created at path based on the flag -e`).to.be.true;
 
             // TEST CASE: screenshot folder is created based on flag -a
             if (cliOptionsJson.a == "screenshots") {
@@ -88,28 +88,28 @@ Cypress.Commands.add('runScanAndCheckResultFilesCreated', (cliOptionsJson) => {
 
         }).then((exists) => {
             if (cliOptionsJson.a === "screenshots") {
-                expect(exists).to.be.true;
+                expect(exists, `screenshot folder is not created based on flag -a`).to.be.true;
             }
 
             // TEST CASE: report.csv is created 
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}/report.csv`)
         }).then((exists) => {
-            expect(exists).to.be.true;
+            expect(exists, `report.csv is not created`).to.be.true;
 
             // TEST CASE: report.html is created 
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}/report.html`);
         }).then((exists) => {
-            expect(exists).to.be.true;
+            expect(exists, `report.html is not created`).to.be.true;
 
             // TEST CASE: scanDetails.csv is created 
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}/scanDetails.csv`);
         }).then((exists) => {
-            expect(exists).to.be.true;
+            expect(exists, `scanDetails.csv is not created`).to.be.true;
 
             // TEST CASE: summary.pdf is created 
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}/summary.pdf`);
         }).then((exists) => {
-            expect(exists).to.be.true;
+            expect(exists, `summary.pdf is not created`).to.be.true;
 
             return purpleA11yResultFolder;
         });
@@ -143,7 +143,7 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 default:
                     throw new Error(`Unexpected cliOptionsJson.c value: ${cliOptionsJson.c}`);
             }
-            expect(scanDataDecodedJson.scanType).to.equal(expectedScanType);
+            expect(scanDataDecodedJson.scanType, `scanData.scanType should be according to the flag -c`).to.equal(expectedScanType);
 
             // TEST CASE: scanData.urlScanned should be according to the flag -u
             const normalizeUrl = (url) => {
@@ -151,36 +151,36 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 normalizedUrl = normalizedUrl.toLowerCase();
                 return normalizedUrl;
             };
-            expect(normalizeUrl(scanDataDecodedJson.urlScanned)).to.equal(normalizeUrl(cliOptionsJson.u));
+            expect(normalizeUrl(scanDataDecodedJson.urlScanned), `scanData.urlScanned should be according to the flag -u`).to.equal(normalizeUrl(cliOptionsJson.u));
         
 
             // TEST CASE: scanData.viewport should be according to the flag -d or -w
             if (cliOptionsJson.d){
-                expect(scanDataDecodedJson.viewport).to.equal(cliOptionsJson.d);
+                expect(scanDataDecodedJson.viewport, `scanData.viewport should be according to the flag -d`).to.equal(cliOptionsJson.d);
             } else if (cliOptionsJson.w){
-                expect(scanDataDecodedJson.viewport).to.equal(`CustomWidth_${cliOptionsJson.w}px`); //TODO: check if scandata is string or number
+                expect(scanDataDecodedJson.viewport, `scanData.viewport should be according to the flag -w`).to.equal(`CustomWidth_${cliOptionsJson.w}px`); //TODO: check if scandata is string or number
             }
 
             // TEST CASE: scanData.totalPagesScanned should be <= to the flag -p. 
-            expect(scanDataDecodedJson.totalPagesScanned).to.be.lte(Number(cliOptionsJson.p));
+            expect(scanDataDecodedJson.totalPagesScanned, `scanData.totalPagesScanned should be <= to the flag -p`).to.be.lte(Number(cliOptionsJson.p));
 
             // TEST CASE: scanData.customFlowLabel should be according to the flag -j
-            expect(scanDataDecodedJson.customFlowLabel).to.equal(cliOptionsJson.j);
+            expect(scanDataDecodedJson.customFlowLabel, `scanData.customFlowLabel should be according to the flag -j`).to.equal(cliOptionsJson.j);
 
             // TEST CASE: scanData.pagesScanned should not contain blacklisted urls according to the flag -x (blacklisted)
             // TEST CASE: scanData.pagesScanned should not contain certain links according to the flag -s (strategy)
             const blacklistedPatternsSet = new Set(Cypress.env("blacklistedPatterns"));
             const urlsWithDiffHostnameSet = new Set(Cypress.env("diffHostnameUrl"));
             scanDataDecodedJson.pagesScanned.forEach(page => {
-                expect(blacklistedPatternsSet.has(page.url)).to.be.false;
-                (cliOptionsJson.s == "same-hostname") ? expect(urlsWithDiffHostnameSet.has(page.url)).to.be.false : undefined;
+                expect(blacklistedPatternsSet.has(page.url), `scanData.pagesScanned should not contain ${page.url} according to the flag -x (blacklisted)`).to.be.false;
+                (cliOptionsJson.s == "same-hostname") ? expect(urlsWithDiffHostnameSet.has(page.url), `scanData.pagesScanned should not contain ${page.url} according to the flag -s (strategy)`).to.be.false : undefined;
             });
 
             // TEST CASE: scanData.pagesScanned should not have any duplicates
             cy.wrap(scanDataDecodedJson.pagesScanned).then(pagesScanned => {
                 const urls = pagesScanned.map(page => page.url);
                 const uniqueUrls = new Set(urls);
-                expect(uniqueUrls.size).to.equal(urls.length);
+                expect(uniqueUrls.size, `scanData.pagesScanned should not have any duplicates`).to.equal(urls.length);
             });
 
             // TEST CASE: [crawlDomain] customEnqueueLinksByClickingElements & enqueueLinks functions work
@@ -188,7 +188,7 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 cy.wrap(scanDataDecodedJson.pagesScanned).then(pagesScanned => {
                     const urls = pagesScanned.map(page => page.url);
                     Cypress.env("crawlDomainEnqueueProcessUrls").forEach(expectedUrl => {
-                        expect(urls).to.include(expectedUrl, `URL ${expectedUrl} should be in pagesScanned`);
+                        expect(urls).to.include(expectedUrl, `URL ${expectedUrl} should be in scanData.pagesScanned to verify that customEnqueueLinksByClickingElements & enqueueLinks functions work`);
                     });
                 });
             }
