@@ -26,6 +26,8 @@ const viewportSettings: ViewportSettings = { width: 1920, height: 1040 };
 const thresholds: Thresholds = { mustFix: 200, goodToFix: 200 };
 // additional information to include in the "Scan About" section of the report
 const scanAboutMetadata: ScanAboutMetadata = { browser: 'Chrome (Desktop)' };
+// name of the generated zip of the results at the end of scan
+// const resultsZipName: string = "a11y-scan-results";
 
 const name: string = "PurpleA11y functional test";
 const email: string = "accessibility@tech.gov.sg"
@@ -81,7 +83,8 @@ const purpleA11y = await purpleA11yInit(
     true, // include screenshots of affected elements in the report
     viewportSettings,
     thresholds,
-    scanAboutMetadata,
+    scanAboutMetadata
+    // resultsZipName
 );
 
 

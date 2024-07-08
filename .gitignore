@@ -136,4 +136,4 @@ results
 *PurpleA11y_integration*
 /cypress/*
 purpleA11yResults
-a11y-scan-results.zip
+*.zip

@@ -12,7 +12,7 @@ After `npx cypress run`, find generated cypress report under /cypress/reports/in
 To see more detailed loggings, you can use `npx cypress open` instead of `npx cypress run`
 
 ## How to change the branch of Purple A11y you want to test
-1) Uninstall Purple A11y by running `npm uninstall @govtechsg` then install the desired branch of Purple A11y by running `npm install git+https://github.com/GovTechSG/purple-a11y.git#your-branch-here`
+1) Uninstall Purple A11y by running `npm uninstall @govtechsg` then install the desired branch of Purple A11y by running `npm install git+https://github.com/GovTechSG/purple-a11y.git#your-branch-here`. (Replace "your-branch-here" with your branch name)
 2) Next, set up PurpleA11y accordingly:
 ```
 cd node_modules/@govtechsg/purple-hats
