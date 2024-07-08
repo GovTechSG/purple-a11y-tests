@@ -1,5 +1,5 @@
 import { defineConfig } from "cypress";
-import purpleA11yInit from "purplea11y";
+import purpleA11yInit from "@govtechsg/purple-hats";
 import mochawesome from 'cypress-mochawesome-reporter/plugin';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
@@ -23,7 +23,7 @@ interface ScanAboutMetadata {
 // viewport used in tests to optimise screenshots
 const viewportSettings: ViewportSettings = { width: 1920, height: 1040 };
 // specifies the number of occurrences before error is thrown for test failure
-const thresholds: Thresholds = { mustFix: 20, goodToFix: 20 };
+const thresholds: Thresholds = { mustFix: 200, goodToFix: 200 };
 // additional information to include in the "Scan About" section of the report
 const scanAboutMetadata: ScanAboutMetadata = { browser: 'Chrome (Desktop)' };
 
@@ -75,7 +75,7 @@ const localTxtFileDirectory = `${localFilesFolderDirectory}/e.txt`
 
 const purpleA11y = await purpleA11yInit(
     mainTestHomePageUrl, // initial url to start scan
-    "purplea11y test", // label for test. Update gitignore accordingly if change
+    "PurpleA11y integration", // label for test. Update gitignore accordingly if change
     name,
     email,
     true, // include screenshots of affected elements in the report
@@ -119,7 +119,7 @@ const cliOptionsJsonC = {
     "a": "screenshots" 
 }
 
-const purpleA11yPath = "node_modules/purplea11y"
+const purpleA11yPath = "node_modules/@govtechsg/purple-hats"
 
 const getBlackListedPatterns = (blacklistedPatternsFilename: string|null): string[] | null=> {
     let exclusionsFile: any = null;

@@ -1,18 +1,22 @@
 describe("Integration", () => {
-    it("should run purple A11y", () => {
-        cy.visit(
-            "https://govtechsg.github.io/purple-banner-embeds/purple-integrated-scan-example.htm"
-        );
+    it("should generate results after scan", () => {
+        cy.visit(Cypress.env("mainTestHomePageUrl"));
         cy.injectPurpleA11yScripts();
         cy.runPurpleA11yScan();
-         cy.get("button[onclick=\"toggleSecondSection()\"]").click();
+        cy.get("#button-manual-nav-onclick-to-3").click()
+        cy.injectPurpleA11yScripts();
         // Run a scan on <input> and <button> elements
         cy.runPurpleA11yScan({
             elementsToScan: ["input", "button"],
             elementsToClick: ["button[onclick=\"toggleSecondSection()\"]"],
             metadata: "Clicked button"
         });
-
         cy.terminatePurpleA11y();
+        
+
+
+
+
+
     });
 });

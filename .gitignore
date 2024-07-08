@@ -133,6 +133,7 @@ dist
 dist
 errors.txt
 results
-*purplea11y_test*
+*PurpleA11y_integration*
 /cypress/*
 purpleA11yResults
+a11y-scan-results.zip
