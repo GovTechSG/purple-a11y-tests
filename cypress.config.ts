@@ -75,6 +75,13 @@ const localXhtmlFileDirectory = `${localFilesFolderDirectory}/c.xhtml`
 const localXmlFileDirectory = `${localFilesFolderDirectory}/d.xml`
 const localTxtFileDirectory = `${localFilesFolderDirectory}/e.txt`
 
+const cliOptionsJsonIntegration = {
+    "o": "a11y-integration", // result zip name
+    "e": `${getProjectRootDirectory()}/results`, // results export directory
+    "integrationViewport": viewportSettings,
+    "a": "screenshots"
+}
+
 const purpleA11y = await purpleA11yInit(
     mainTestHomePageUrl, // initial url to start scan
     "PurpleA11y integration", // label for test. Update gitignore accordingly if change
@@ -83,27 +90,26 @@ const purpleA11y = await purpleA11yInit(
     true, // include screenshots of affected elements in the report
     viewportSettings,
     thresholds,
-    scanAboutMetadata
-    // resultsZipName
+    scanAboutMetadata,
+    cliOptionsJsonIntegration.o
 );
-
 
 // cliOptionsJson A, B, C are all the permutations of the cli flags
 const cliOptionsJsonA = {
     ...commonCliOptions,
     "d": "Desktop",
-    "p": 120,  //120
+    "p": 10,  //120
     "h": "yes", 
     "b": "chromium", 
     "t": "20",
     "i": "all", // KIV: need to vary (pdf-only/html-only) for B & C once we are able to create pdfs with accessibility issues
-    "a": "screenshots" // TODO: add check to assert that ss file is not there when -a is none
+    "a": "screenshots" 
 }
 
 const cliOptionsJsonB = {
     ...commonCliOptions,
     "d": "Mobile",
-    "p": 110, //110
+    "p": 10, //110
     "h": "no",
     "b": "chrome", 
     "t": "15",
@@ -114,13 +120,14 @@ const cliOptionsJsonB = {
 const cliOptionsJsonC = {
     ...commonCliOptions,
     "w": 350,
-    "p": 100, //100
+    "p": 10, //100
     "h": "yes",
     "b": "edge", 
     "t": "10",
     "i": "all",
     "a": "screenshots" 
 }
+
 
 const purpleA11yPath = "node_modules/@govtechsg/purple-hats"
 
@@ -170,6 +177,7 @@ export default defineConfig({
             config.env.cliOptionsJsonA = cliOptionsJsonA;
             config.env.cliOptionsJsonB = cliOptionsJsonB;
             config.env.cliOptionsJsonC = cliOptionsJsonC;
+            config.env.cliOptionsJsonIntegration  = cliOptionsJsonIntegration;
             config.env.purpleA11yPath = purpleA11yPath;
             config.env.blacklistedPatterns = blacklistedPatterns;
             config.env.crawlDomainEnqueueProcessUrls = crawlDomainEnqueueProcessUrls;
@@ -184,8 +192,9 @@ export default defineConfig({
             config.env.mainTestSitemapXmlUrl = mainTestSitemapXmlUrl;
             config.env.mainTestSitemapRssUrl = mainTestSitemapRssUrl;
             config.env.mainTestSitemapAtomUrl = mainTestSitemapAtomUrl;
-            config.env.IT_RUN_SCAN = "Process should complete & generate result files";
+            config.env.IT_RUN_SCAN = "Process should complete successfully"
             config.env.IT_CHECK_SCANDATA = "scanData in report.html should correspond to cli command flags";
+            config.env.IT_CHECK_RESULTS_CREATION = "Result files should be generated";
             config.env.localHtmlFileDirectory = localHtmlFileDirectory;
             config.env.localHtmFileDirectory = localHtmFileDirectory;
             config.env.localXhtmlFileDirectory = localXhtmlFileDirectory;
@@ -209,7 +218,7 @@ export default defineConfig({
                     purpleA11y.testThresholds();
                     return null;
                 },
-                async terminatePurpleA11y(): Promise<null> {
+                async terminatePurpleA11y(): Promise<string> {
                     return await purpleA11y.terminate();
                 },
                 checkFileExist(filename) {

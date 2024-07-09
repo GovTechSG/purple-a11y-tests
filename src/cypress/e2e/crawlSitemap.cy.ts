@@ -12,46 +12,53 @@ context("Crawl Sitemap", () => {
         let purpleA11yResultFolder;
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
-            cy.runScanAndCheckResultFilesCreated(cliOptionsJsonA).then((result) => {
+            cy.runPurpleA11yProcess(cliOptionsJsonA).then((result) => {
                 purpleA11yResultFolder = result;
             })
         });
 
+        it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            cy.checkResultFilesCreated(cliOptionsJsonA, purpleA11yResultFolder)
+        });
+
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
             cy.checkReportHtmlScanData(cliOptionsJsonA, purpleA11yResultFolder)
-
         });
     });
-
 
     describe(`[Main B] ${getCliCommand(cliOptionsJsonB, true)}`, () => {
         let purpleA11yResultFolder;
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
-            cy.runScanAndCheckResultFilesCreated(cliOptionsJsonB).then((result) => {
+            cy.runPurpleA11yProcess(cliOptionsJsonB).then((result) => {
                 purpleA11yResultFolder = result;
             })
         });
 
+        it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            cy.checkResultFilesCreated(cliOptionsJsonB, purpleA11yResultFolder)
+        });
+
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
             cy.checkReportHtmlScanData(cliOptionsJsonB, purpleA11yResultFolder)
-
         });
     });
-
 
     describe(`[Main C] ${getCliCommand(cliOptionsJsonC, true)}`, () => {
         let purpleA11yResultFolder;
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
-            cy.runScanAndCheckResultFilesCreated(cliOptionsJsonC).then((result) => {
+            cy.runPurpleA11yProcess(cliOptionsJsonC).then((result) => {
                 purpleA11yResultFolder = result;
             })
         });
 
+        it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            cy.checkResultFilesCreated(cliOptionsJsonC, purpleA11yResultFolder)
+        });
+
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
             cy.checkReportHtmlScanData(cliOptionsJsonC, purpleA11yResultFolder)
-
         });
     });
 });

@@ -2,7 +2,7 @@ declare namespace Cypress {
   interface Chainable<Subject> {
     injectPurpleA11yScripts(): Chainable<void>;
     runPurpleA11yScan(options?: PurpleA11yScanOptions): Chainable<void>;
-    terminatePurpleA11y(): Chainable<void>;
+    terminatePurpleA11y(): Chainable<any>;
   }
 
   interface PurpleA11yScanOptions {

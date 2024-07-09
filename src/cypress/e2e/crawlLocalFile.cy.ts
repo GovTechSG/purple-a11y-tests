@@ -15,46 +15,53 @@ context("Crawl Local File", () => {
         let purpleA11yResultFolder;
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
-            cy.runScanAndCheckResultFilesCreated(cliOptionsJsonA).then((result) => {
+            cy.runPurpleA11yProcess(cliOptionsJsonA).then((result) => {
                 purpleA11yResultFolder = result;
             })
         });
 
+        it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            cy.checkResultFilesCreated(cliOptionsJsonA, purpleA11yResultFolder)
+        });
+
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
             cy.checkReportHtmlScanData(cliOptionsJsonA, purpleA11yResultFolder)
-
         });
     });
-
 
     describe(`[Main B] ${getCliCommand(cliOptionsJsonB, true)}`, () => {
         let purpleA11yResultFolder;
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
-            cy.runScanAndCheckResultFilesCreated(cliOptionsJsonB).then((result) => {
+            cy.runPurpleA11yProcess(cliOptionsJsonB).then((result) => {
                 purpleA11yResultFolder = result;
             })
         });
 
+        it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            cy.checkResultFilesCreated(cliOptionsJsonB, purpleA11yResultFolder)
+        });
+
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
             cy.checkReportHtmlScanData(cliOptionsJsonB, purpleA11yResultFolder)
-
         });
     });
-
 
     describe(`[Main C] ${getCliCommand(cliOptionsJsonC, true)}`, () => {
         let purpleA11yResultFolder;
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
-            cy.runScanAndCheckResultFilesCreated(cliOptionsJsonC).then((result) => {
+            cy.runPurpleA11yProcess(cliOptionsJsonC).then((result) => {
                 purpleA11yResultFolder = result;
             })
         });
 
+        it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            cy.checkResultFilesCreated(cliOptionsJsonC, purpleA11yResultFolder)
+        });
+
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
             cy.checkReportHtmlScanData(cliOptionsJsonC, purpleA11yResultFolder)
-
         });
     });
     
@@ -62,14 +69,17 @@ context("Crawl Local File", () => {
         let purpleA11yResultFolder;
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
-            cy.runScanAndCheckResultFilesCreated(cliOptionsJsonC).then((result) => {
+            cy.runPurpleA11yProcess(cliOptionsJsonD).then((result) => {
                 purpleA11yResultFolder = result;
             })
         });
 
-        it(Cypress.env("IT_CHECK_SCANDATA"), () => {
-            cy.checkReportHtmlScanData(cliOptionsJsonC, purpleA11yResultFolder)
+        it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            cy.checkResultFilesCreated(cliOptionsJsonD, purpleA11yResultFolder)
+        });
 
+        it(Cypress.env("IT_CHECK_SCANDATA"), () => {
+            cy.checkReportHtmlScanData(cliOptionsJsonD, purpleA11yResultFolder)
         });
     });
 
@@ -77,14 +87,18 @@ context("Crawl Local File", () => {
         let purpleA11yResultFolder;
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
-            cy.runScanAndCheckResultFilesCreated(cliOptionsJsonC).then((result) => {
+            cy.runPurpleA11yProcess(cliOptionsJsonE).then((result) => {
                 purpleA11yResultFolder = result;
             })
         });
 
-        it(Cypress.env("IT_CHECK_SCANDATA"), () => {
-            cy.checkReportHtmlScanData(cliOptionsJsonC, purpleA11yResultFolder)
+        it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            cy.checkResultFilesCreated(cliOptionsJsonE, purpleA11yResultFolder)
+        });
 
+        it(Cypress.env("IT_CHECK_SCANDATA"), () => {
+            cy.checkReportHtmlScanData(cliOptionsJsonE, purpleA11yResultFolder)
         });
     });
+
 });
