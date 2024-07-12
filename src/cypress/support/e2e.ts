@@ -179,7 +179,7 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 if (cliOptionsJson.d) {
                     expect(scanDataDecodedJson.viewport, `scanData.viewport should be according to the flag -d`).to.equal(cliOptionsJson.d);
                 } else if (cliOptionsJson.w) {
-                    expect(scanDataDecodedJson.viewport, `scanData.viewport should be according to the flag -w`).to.equal(`CustomWidth_${cliOptionsJson.w}px`); //TODO: check if scandata is string or number
+                    expect(scanDataDecodedJson.viewport, `scanData.viewport should be according to the flag -w`).to.equal(`CustomWidth_${cliOptionsJson.w}px`);
                 }
 
                 // TEST CASE: scanData.totalPagesScanned should be <= to the flag -p. 
@@ -214,7 +214,7 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 expect(uniquePagesScannedUrls.size, `scanData.pagesScanned should not have any duplicates`).to.equal(pagesScannedurls.length);
 
                 if (cliOptionsJson.c == Cypress.env("crawlDomainCliOption")) {
-                    // TODO: this bug below is not fixed in purplea11y even though it should be
+                    // TODO: this bug of the test case below is not fixed in purplea11y even though it should be
                     // TEST CASE: [crawlDomain] scanData.pagesScanned should contain meta redirected url
                     // expect(isMetaRedirectedUrlScanned, "scanData.pagesScanned should contain meta redirected url (/7.html)").to.be.ok;
 
