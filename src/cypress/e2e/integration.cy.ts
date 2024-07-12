@@ -5,7 +5,7 @@ const constantCliOptionsJson = { "c": Cypress.env("customFlowCliOption") }
 context("Integration", () => {
     const cliOptionsJsonIntegration = { ...Cypress.env("cliOptionsJsonIntegration"), ...constantCliOptionsJson, "u": Cypress.env("mainTestHomePageUrl") }
 
-    describe("Integration flow", () => {
+    describe("Visit a page and do a purpleA11y scan (happy flow)", () => {
         let purpleA11yResultFolder;
         it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
             cy.visit(Cypress.env("mainTestHomePageUrl"));
