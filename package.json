@@ -13,6 +13,7 @@
   "type": "module",
   "devDependencies": {
     "@types/cypress": "^1.1.3",
+    "concurrently": "^8.2.2",
     "cypress": "^13.12.0",
     "cypress-mochawesome-reporter": "^3.8.2",
     "mochawesome": "^7.1.3",
@@ -22,6 +23,6 @@
     "typescript": "^5.5.2"
   },
   "dependencies": {
-    "@govtechsg/purple-hats": "github:GovTechSG/purple-a11y#improv/integration-scan-summary"
+    "@govtechsg/purple-hats": "github:GovTechSG/purple-a11y#master"
   }
 }

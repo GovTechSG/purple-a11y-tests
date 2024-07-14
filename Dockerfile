@@ -8,7 +8,7 @@ WORKDIR /root
 COPY . .
 
 # Make sure the shell scripts are executable
-RUN chmod +x /root/shell_scripts/run_scripts.sh
+RUN chmod +x /root/shell_scripts/host_websites_and_run_cypress.sh
 RUN chmod +x /root/shell_scripts/create_100_html.sh
 RUN chmod +x /root/shell_scripts/create_100_html_basic_auth.sh
 
@@ -21,4 +21,4 @@ RUN chmod +x /root/shell_scripts/create_100_html_basic_auth.sh
 # RUN echo "127.0.0.1 myhost2.local" >> /etc/hosts
 
 # Command to run the shell script and print the port link
-CMD ["sh", "-c", "/root/shell_scripts/run_scripts.sh"]
+CMD ["sh", "-c", "/root/shell_scripts/host_websites_and_run_cypress.sh"]
