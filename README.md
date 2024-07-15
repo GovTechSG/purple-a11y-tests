@@ -1,13 +1,21 @@
 # purple-a11y-tests
-Functional tests for Purple A11y
+Functional tests for Purple A11y on all scan modes with all permutations of scanning options
+
+### Limitations
+- Docker environment only allows for using Chromium.
 
 ## How to run
+1. Install dependencies
 ```
 npm install
 npm run build
+```
+
+2. Run the tests
+```
 npx cypress run
 ```
-After `npx cypress run`, find generated cypress report under /cypress/reports/index.html from project root directory.  
+After `npx cypress run`, find generated cypress report at /cypress/reports/index.html from project root directory.  
 
 To see more detailed loggings, you can use `npx cypress open` instead of `npx cypress run`
 
