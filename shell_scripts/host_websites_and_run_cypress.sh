@@ -5,12 +5,6 @@
 # Navigate to the shell_scripts directory
 cd shell_scripts
 
-# Run the shell_scripts/create_100_html.sh script
-bash create_100_html.sh
-
-# Run the shell_scripts/create_100_html_basic_auth.sh script
-bash create_100_html_basic_auth.sh
-
 # Check if HTML creation scripts executed successfully
 if [ $? -eq 0 ]; then
   echo "HTML files created successfully. Starting the HTTP server and Cypress tests..."

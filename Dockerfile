@@ -9,8 +9,6 @@ COPY . .
 
 # Make sure the shell scripts are executable
 RUN chmod +x /root/shell_scripts/host_websites_and_run_cypress.sh
-RUN chmod +x /root/shell_scripts/create_100_html.sh
-RUN chmod +x /root/shell_scripts/create_100_html_basic_auth.sh
 
 # Install any dependencies specified in requirements.txt
 # Uncomment the following line if you have a requirements.txt file
