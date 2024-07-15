@@ -31,7 +31,7 @@ RUN npx cypress verify
 # Make sure the shell scripts are executable
 RUN chmod +x /root/shell_scripts/host_websites_and_run_cypress.sh
 
-# Install any dependencies specified in requirements.txt
+# Install any dependencies specified in requirements.txt 
 # Uncomment the following line if you have a requirements.txt file
 # RUN pip install --no-cache-dir -r requirements.txt
 
