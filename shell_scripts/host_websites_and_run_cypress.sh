@@ -2,6 +2,12 @@
 # run_all.sh
 # This script runs shell_scripts/create_100_html.sh and shell_scripts/create_100_html_basic_auth.sh and then starts the HTTP server and Cypress tests concurrently
 
+# Clone the purple-a11y-tests repository
+git clone https://github.com/GovTechSG/purple-a11y-tests.git
+
+# Navigate to the cloned repository
+cd purple-a11y-tests
+
 # Navigate to the shell_scripts directory
 cd shell_scripts
 
