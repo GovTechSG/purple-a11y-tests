@@ -1,29 +1,36 @@
 #!/bin/bash
 # run_all.sh
-# This script runs shell_scripts/create_100_html.sh and shell_scripts/create_100_html_basic_auth.sh and then starts the HTTP server and Cypress tests concurrently
+# This script clones the purple-a11y-tests and another repository, and then starts the HTTP server and Cypress tests concurrently
 
 # Clone the purple-a11y-tests repository
 git clone https://github.com/GovTechSG/purple-a11y-tests.git
 
 # Navigate to the cloned repository
-cd purple-a11y-tests
+cd purple-a11y-tests || { echo "Failed to navigate to purple-a11y-tests directory"; exit 1; }
 
-# Navigate to the shell_scripts directory
-cd shell_scripts
+# Run any scripts needed in the purple-a11y-tests repository
+# Example: ./scripts/your_script.sh
 
-# Check if HTML creation scripts executed successfully
-if [ $? -eq 0 ]; then
-  echo "HTML files created successfully. Starting the HTTP server and Cypress tests..."
+echo "Cloned purple-a11y-tests repository. Starting the HTTP server and Cypress tests..."
 
-  # Navigate back to the root directory
-  cd ..
+# Navigate back to the root directory
+cd ..
 
-  # Run the Python HTTP server and Cypress tests concurrently
-  npx concurrently \
-    "python3 http_server_auth.py --bind 0.0.0.0 --port 8000" \
-    "npx cypress run"
+# Clone the second repository (replace with your repository URL)
+git clone https://github.com/LeeYiXuan21/leeyixuan21.github.io.git
 
-else
-  echo "Failed to create HTML files. Exiting..."
-  exit 1
-fi
+# Navigate to the cloned repository
+cd leeyixuan21.github.io || { echo "Failed to navigate to leeyixuan21.github.io directory"; exit 1; }
+
+# Run any scripts needed in the second repository
+# Example: ./shell_scripts/your_script.sh
+
+echo "Cloned leeyixuan21.github.io repository. Starting the HTTP server and Cypress tests..."
+
+# Navigate back to the root directory
+cd ..
+
+# Run the Python HTTP server and Cypress tests concurrently
+npx concurrently \
+  "python3 purple-a11y-tests/http_server_auth.py --bind 0.0.0.0 --port 8000" \
+  "npx cypress run"
