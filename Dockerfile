@@ -16,7 +16,7 @@ RUN apt-get update && \
 # Verify Node.js and npm installation
 RUN node -v && npm -v
 
-# Copy the current directory contents into the container at /
+# Copy the current directory contents into the container
 COPY . .
 
 # Install Cypress
