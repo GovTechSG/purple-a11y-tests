@@ -36,5 +36,3 @@ RUN chmod +x /root/shell_scripts/host_websites_and_run_cypress.sh
 
 # Command to run the shell script and keep the container running
 CMD /root/shell_scripts/host_websites_and_run_cypress.sh && tail -f /dev/null
-
-RUN  docker cp purple-a11y-test-instance:/root/cypress/reports /root/cypress
