@@ -54,7 +54,7 @@ const scanModeCliOption = {
 
 //urls
 const diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test/"
-const mainTestHomePageUrl = "http://0.0.0.0:8000/"
+const mainTestHomePageUrl = "http://0.0.0.0:8000"
 const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`
 const mainTestSitemapRssUrl = `${mainTestHomePageUrl}/sitemap.rss`
 const mainTestSitemapAtomUrl = `${mainTestHomePageUrl}/sitemap.atom`
@@ -129,7 +129,7 @@ const cliOptionsJsonC = {
 }
 
 
-const purpleA11yPath = "node_modules/@govtechsg/purple-hats"
+const purpleA11yPath = "~/node_modules/@govtechsg/purple-hats"
 
 const getBlackListedPatterns = (blacklistedPatternsFilename: string|null): string[] | null=> {
     let exclusionsFile: any = null;
