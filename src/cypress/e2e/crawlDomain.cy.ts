@@ -13,15 +13,18 @@ context("Crawl Domain", () => {
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
             cy.runPurpleA11yProcess(cliOptionsJsonA).then((result) => {
+                console.log(result)
                 purpleA11yResultFolder = result;
             })
         });
 
         it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            console.log('1')
             cy.checkResultFilesCreated(cliOptionsJsonA, purpleA11yResultFolder)
         });
 
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
+            console.log('2')
             cy.checkReportHtmlScanData(cliOptionsJsonA, purpleA11yResultFolder)
         });
     });
@@ -31,15 +34,18 @@ context("Crawl Domain", () => {
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
             cy.runPurpleA11yProcess(cliOptionsJsonB).then((result) => {
+                console.log('3', result)
                 purpleA11yResultFolder = result;
             })
         });
 
         it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            console.log('3')
             cy.checkResultFilesCreated(cliOptionsJsonB, purpleA11yResultFolder)
         });
 
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
+            console.log('4')
             cy.checkReportHtmlScanData(cliOptionsJsonB, purpleA11yResultFolder)
         });
     });
@@ -49,15 +55,18 @@ context("Crawl Domain", () => {
 
         it(Cypress.env("IT_RUN_SCAN"), () => {
             cy.runPurpleA11yProcess(cliOptionsJsonC).then((result) => {
+                console.log('5', result)
                 purpleA11yResultFolder = result;
             })
         });
 
         it(Cypress.env("IT_CHECK_RESULTS_CREATION"), () => {
+            console.log('5')
             cy.checkResultFilesCreated(cliOptionsJsonC, purpleA11yResultFolder)
         });
 
         it(Cypress.env("IT_CHECK_SCANDATA"), () => {
+            console.log('6')
             cy.checkReportHtmlScanData(cliOptionsJsonC, purpleA11yResultFolder)
         });
     });
