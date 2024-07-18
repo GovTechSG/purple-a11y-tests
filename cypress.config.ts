@@ -129,7 +129,7 @@ const cliOptionsJsonC = {
 }
 
 
-const purpleA11yPath = "node_modules/@govtechsg/purple-hats"
+const purpleA11yPath = "~node_modules/@govtechsg/purple-hats"
 
 const getBlackListedPatterns = (blacklistedPatternsFilename: string|null): string[] | null=> {
     let exclusionsFile: any = null;

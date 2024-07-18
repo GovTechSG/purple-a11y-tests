@@ -17,6 +17,7 @@ To see more detailed loggings, you can use `npx cypress open` instead of `npx cy
 ```
 cd node_modules/@govtechsg/purple-hats
 npm install
+npx install chromium 
 npm run build
 cd ../../../
 ```
