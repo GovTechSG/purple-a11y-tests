@@ -82,6 +82,8 @@ RUN cd node_modules/@govtechsg/purple-hats && \
 
 # Make sure the shell scripts are executable
 RUN chmod +x ./shell_scripts/host_websites_and_run_cypress.sh
+RUN chmod +x ./shell_scripts/start_docker.sh
+RUN chmod +x ./shell_scripts/stop_docker.sh
 
 # Environment variables for node and Playwright
 # ENV NODE_ENV=dev
