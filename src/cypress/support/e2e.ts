@@ -73,11 +73,7 @@ Cypress.Commands.add('runPurpleA11yProcess', (cliOptionsJson) => {
         })
 })
 
-console.log(isIntegrationMode)
-
 Cypress.Commands.add('checkResultFilesCreated', (cliOptionsJson, purpleA11yResultFolder, isIntegrationMode = false) => {
-
-    console.log('true')
     let resultZipExpectedDir;
     if (isIntegrationMode) {
         resultZipExpectedDir = `${cliOptionsJson.o}.zip`
