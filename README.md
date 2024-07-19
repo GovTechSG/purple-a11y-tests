@@ -38,7 +38,7 @@ cd ../../../
 #### Prerequisites: 
 Ensure that [Colima](https://github.com/abiosoft/colima) and [Docker](https://www.docker.com/get-started) are installed.
 
-#### Step 1: Start colima using
+#### Step 1: Start colima
 ```
 colima start
 ```
@@ -50,7 +50,7 @@ colima start
 - `stop_docker.sh` is found in ./shell_scripts
 - Cypress tests results will then be copied over from inside the container to your local repo at ./cypress/reports
 
-#### Step 4: Stop colima using
+#### Step 4: Stop colima
 ```
 colima stop
 ```
