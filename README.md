@@ -5,39 +5,21 @@ Functional tests for Purple A11y
 ```
 npm install
 npm run build
-RUNNING_LOCAL_TESTS=true npx cypress run
+RUNNING_TESTS_OUTSIDE_DOCKER=true npx cypress run
 ```
-- `RUNNING_LOCAL_TESTS` environment variable is to set the urls to scan to be the live hosted urls, not the urls that is hosted only in docker
-  - Live hosted urls: https://lrperzus.github.io/purple-a11y-strategy-test/ , https://leeyixuan21.github.io/
-  - docker hosted url: http://0.0.0.0:8000
+- `RUNNING_TESTS_OUTSIDE_DOCKER` environment variable is to set the urls to scan to be the live hosted urls, not the urls that is hosted only in docker
+  - Live hosted urls: 
+    - https://leeyixuan21.github.io/
+    - https://lrperzus.github.io/purple-a11y-strategy-test/
+  - Docker hosted urls: 
+    - http://main.purplea11y.com:8000
+    - http://diffHostname.purplea11y.com:8000
 
 - After `npx cypress run`, find generated cypress report under /cypress/reports/index.html from project root directory.  
 
 - To see more detailed loggings, you can use `npx cypress open` instead of `npx cypress run`
 
-## How to run via docker
-
-#### Prerequisites: 
-Install colima & docker then do `colima start`
-
-#### Firstly, build docker image and run it:
-```
-docker build -t cypress-tests .
-docker run -it -p 8000:8000 cypress-tests /bin/bash
-shell_scripts/host_websites_and_run_cypress.sh
-```
-
-#### Subsequently, how to stop running container and remove image:
-```
-docker ps -all   
-docker rm <id> // replace <id> with the id of the running container you want to stop
-docker rmi cypress-tests:latest //this removes the image
-```
-
-
-
-
-## How to change the branch of Purple A11y you want to test
+#### How to change the branch of Purple A11y you want to test
 1) Uninstall Purple A11y by running `npm uninstall @govtechsg` then install the desired branch of Purple A11y by running `npm install git+https://github.com/GovTechSG/purple-a11y.git#your-branch-here`. (Replace "your-branch-here" with your branch name)
 2) Next, set up PurpleA11y accordingly:
 ```
@@ -47,6 +29,17 @@ npx playwright install chromium
 npm run build
 cd ../../../
 ```
+
+## How to run using docker container via colima
+
+#### Prerequisites: 
+Install colima & docker then do `colima start`
+
+#### To begin, build docker image and run it by running `start_docker.sh`:
+- `start_docker.sh` is found in ./shell_scripts
+
+#### To end, stop running container and remove image by running `stop_docker.sh`:
+- `stop_docker.sh` is found in ./shell_scripts
 
 ## TODO
 1) In functional test website home page, add anchor tag to download .exe file. (just uncomment it, its temporarily commented out) - do this when this bug is fixed

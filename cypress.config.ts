@@ -56,14 +56,14 @@ const scanModeCliOption = {
 let diffHostnameUrl;
 let mainTestHomePageUrl;
 
-if (process.env.RUNNING_LOCAL_TESTS) {
+if (process.env.RUNNING_TESTS_OUTSIDE_DOCKER) {
     // live hosted websites
     diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test/"
     mainTestHomePageUrl = "https://leeyixuan21.github.io/"
 } else {
     // websites hosted by docker container only
-    diffHostnameUrl = "http://diffHostname.purple.com:8000"
-    mainTestHomePageUrl = "http://main.purple.com:8000"
+    diffHostnameUrl = "http://diffHostname.purplea11y.com:8000"
+    mainTestHomePageUrl = "http://main.purplea11y.com:8000"
 }
 
 const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`
@@ -109,7 +109,7 @@ const purpleA11y = await purpleA11yInit(
 const cliOptionsJsonA = {
     ...commonCliOptions,
     "d": "Desktop",
-    "p": 10,  //120
+    "p": 120,  //120
     "b": "chromium", 
     "t": "20",
     "i": "all", // KIV: need to vary (pdf-only/html-only) for B & C once we are able to create pdfs with accessibility issues
@@ -119,7 +119,7 @@ const cliOptionsJsonA = {
 const cliOptionsJsonB = {
     ...commonCliOptions,
     "d": "Mobile",
-    "p": 10, //110
+    "p": 110, //110
     "b": "chrome", 
     "t": "15",
     "i": "all",
@@ -129,7 +129,7 @@ const cliOptionsJsonB = {
 const cliOptionsJsonC = {
     ...commonCliOptions,
     "w": 350,
-    "p": 10, //100
+    "p": 100, //100
     "b": "edge", 
     "t": "10",
     "i": "all",

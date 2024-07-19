@@ -7,7 +7,7 @@ fi
 docker build -t purple-a11y-tests .
 
 # Add hostname mappings and run the container
-docker run -it --name purple-a11y-instances --add-host=main.purple.com:0.0.0.0 --add-host=diffHostname.purple.com:0.0.0.0 purple-a11y-tests
+docker run -it --name purple-a11y-instances --add-host=main.purplea11y.com:0.0.0.0 --add-host=diffHostname.purplea11y.com:0.0.0.0 purple-a11y-tests
 
 # Access the container's bash shell
 docker exec -it purple-a11y-instances /bin/bash

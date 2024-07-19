@@ -92,4 +92,4 @@ RUN chmod +x ./shell_scripts/stop_docker.sh
 # ENV PATH="/opt/verapdf:${PATH}"
 
 # Command to run the shell script and keep the container running
-# CMD ["/bin/bash", "-c", "/app/shell_scripts/host_websites_and_run_cypress.sh && tail -f /dev/null"]
+CMD ["/bin/bash", "-c", "/app/shell_scripts/host_websites_and_run_cypress.sh && tail -f /dev/null"]
