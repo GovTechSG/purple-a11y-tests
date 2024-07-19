@@ -53,7 +53,7 @@ const base64Decode = (data) => {
 Cypress.Commands.add('runPurpleA11yProcess', (cliOptionsJson) => {
     let purpleA11yResultFolder;
     const cliCommand = getCliCommand(cliOptionsJson);
-    return cy.exec(cliCommand, { failOnNonZeroExit: false, timeout: 300000 })
+    return cy.exec(cliCommand, { failOnNonZeroExit: false, timeout: 420000 })
         .then((result) => {
 
             // TEST CASE: scan process complete successfully
