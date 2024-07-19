@@ -18,7 +18,7 @@ RUNNING_LOCAL_TESTS=true npx cypress run
 ## How to run via docker
 
 #### Prerequisites: 
-Install colima then do `colima start`
+Install colima & docker then do `colima start`
 
 #### Firstly, build docker image and run it:
 ```
