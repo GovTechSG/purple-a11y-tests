@@ -1,5 +1,8 @@
 # purple-a11y-tests
-Functional tests for Purple A11y
+#### Functional tests for [Purple A11y](https://github.com/govtechsg/purple-a11y)
+
+#### Limitations
+ - Docker can only run chromium in headless mode, using chrome and edge for Purple A11y will not be tested
 
 ## How to run locally
 ```
