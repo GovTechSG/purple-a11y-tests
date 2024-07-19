@@ -2,13 +2,18 @@ import { getCliCommand } from '../support/e2e';
 
 const constantCliOptionsJson = { "c": Cypress.env("crawlLocalFileCliOption") }
 
+// need to remove p flag as some local file types cannot accept a p flag
+const { p: maxPageA, ...cliOptionsJsonAWithoutP } = Cypress.env("cliOptionsJsonA");
+const { p: maxPageB, ...cliOptionsJsonBWithoutP } = Cypress.env("cliOptionsJsonB");
+const { p: maxPageC, ...cliOptionsJsonCWithoutP } = Cypress.env("cliOptionsJsonC");
+
 // Main A B C is the testcase for happy flow, where cliOptionsJson A B C are all the permutations of the cli flags 
 context("Crawl Local File", () => {
-    const cliOptionsJsonA = { ...Cypress.env("cliOptionsJsonA"), ...constantCliOptionsJson, "u": Cypress.env("localHtmlFileDirectory") }
-    const cliOptionsJsonB = { ...Cypress.env("cliOptionsJsonB"), ...constantCliOptionsJson, "u": Cypress.env("localHtmFileDirectory") }
-    const cliOptionsJsonC = { ...Cypress.env("cliOptionsJsonC"), ...constantCliOptionsJson, "u": Cypress.env("localXhtmlFileDirectory") }
-    const cliOptionsJsonD = { ...Cypress.env("cliOptionsJsonA"), ...constantCliOptionsJson, "u": Cypress.env("localXmlFileDirectory") }
-    const cliOptionsJsonE = { ...Cypress.env("cliOptionsJsonA"), ...constantCliOptionsJson, "u": Cypress.env("localTxtFileDirectory") }
+    const cliOptionsJsonA = { ...cliOptionsJsonAWithoutP, ...constantCliOptionsJson, "u": Cypress.env("localHtmlFileDirectory") }
+    const cliOptionsJsonB = { ...cliOptionsJsonBWithoutP, ...constantCliOptionsJson, "u": Cypress.env("localHtmFileDirectory") }
+    const cliOptionsJsonC = { ...cliOptionsJsonCWithoutP, ...constantCliOptionsJson, "u": Cypress.env("localXhtmlFileDirectory") }
+    const cliOptionsJsonD = { ...cliOptionsJsonAWithoutP, ...constantCliOptionsJson, "u": Cypress.env("localXmlFileDirectory") }
+    const cliOptionsJsonE = { ...cliOptionsJsonAWithoutP, ...constantCliOptionsJson, "u": Cypress.env("localTxtFileDirectory") }
 
 
     describe(`[Main A] ${getCliCommand(cliOptionsJsonA, true)}`, () => {

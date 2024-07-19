@@ -53,8 +53,19 @@ const scanModeCliOption = {
 }
 
 //urls
-const diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test/"
-const mainTestHomePageUrl = "http://0.0.0.0:8000" // this is the live hosted url: "https://leeyixuan21.github.io/"
+let diffHostnameUrl;
+let mainTestHomePageUrl;
+
+if (process.env.RUNNING_LOCAL_TESTS) {
+    // live hosted websites
+    diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test/"
+    mainTestHomePageUrl = "https://leeyixuan21.github.io/"
+} else {
+    // websites hosted by docker container only
+    diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test/"
+    mainTestHomePageUrl = "http://0.0.0.0:8000"
+}
+
 const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`
 const mainTestSitemapRssUrl = `${mainTestHomePageUrl}/sitemap.rss`
 const mainTestSitemapAtomUrl = `${mainTestHomePageUrl}/sitemap.atom`

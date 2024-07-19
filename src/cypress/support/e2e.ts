@@ -181,8 +181,8 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                     expect(scanDataDecodedJson.viewport, `scanData.viewport should be according to the flag -w`).to.equal(`CustomWidth_${cliOptionsJson.w}px`);
                 }
 
-                // TEST CASE: scanData.totalPagesScanned should be <= to the flag -p. 
-                expect(scanDataDecodedJson.totalPagesScanned, `scanData.totalPagesScanned should be <= to the flag -p`).to.be.lte(Number(cliOptionsJson.p));
+                // TEST CASE: if p flag is specified, scanData.totalPagesScanned should be <= to the flag -p. 
+                cliOptionsJson.p ? expect(scanDataDecodedJson.totalPagesScanned, `scanData.totalPagesScanned should be <= to the flag -p`).to.be.lte(Number(cliOptionsJson.p)) : undefined;
 
                 // TEST CASE: scanData.customFlowLabel should be according to the flag -j
                 expect(scanDataDecodedJson.customFlowLabel, `scanData.customFlowLabel should be according to the flag -j`).to.equal(cliOptionsJson.j);
