@@ -11,7 +11,7 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y curl gnupg lsb-release && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs wget git-all xvfb libgbm-dev libgtk2.0-0 libgtk-3-0 libnotify-dev \
+    apt-get install -y nodejs wget git-all xvfb libgbm-dev libgtk2.0-0 libgtk-3-0 libnotify-dev zip\
     libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth dbus-x11 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
