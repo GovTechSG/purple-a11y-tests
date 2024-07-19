@@ -77,7 +77,8 @@ const commonCliOptions = {
     "j": "purple a11y test label",
     "k": `${name}:${email}`,
     "x": `${getProjectRootDirectory()}/blacklistedPatterns.txt`,
-    "b": "chromium"
+    "b": "chromium",
+    "p": 100
 }
 
 const localFilesFolderDirectory = `${getProjectRootDirectory()}/localFilesForTesting`
@@ -110,7 +111,6 @@ const purpleA11y = await purpleA11yInit(
 const cliOptionsJsonA = {
     ...commonCliOptions,
     "d": "Desktop",
-    "p": 100,  //120
     "t": "20",
     "i": "all", // KIV: need to vary (pdf-only/html-only) for B & C once we are able to create pdfs with accessibility issues
     "a": "screenshots" 
@@ -119,7 +119,6 @@ const cliOptionsJsonA = {
 const cliOptionsJsonB = {
     ...commonCliOptions,
     "d": "Mobile",
-    "p": 100, //110
     "t": "15",
     "i": "all",
     "a": "none" 
@@ -128,7 +127,6 @@ const cliOptionsJsonB = {
 const cliOptionsJsonC = {
     ...commonCliOptions,
     "w": 350,
-    "p": 100, //100
     "t": "10",
     "i": "all",
     "a": "screenshots" 
