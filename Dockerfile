@@ -76,7 +76,7 @@ RUN npm install git+https://github.com/GovTechSG/purple-hats.git#master
 # Navigate to purple-hats directory, install dependencies, and build
 RUN cd node_modules/@govtechsg/purple-hats && \
     npm install && \
-    npx install chromium && \
+    npx playwright install chromium && \
     npm run build || true && \
     cd ../../../
 
