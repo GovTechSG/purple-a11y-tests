@@ -46,7 +46,7 @@ colima start
 #### Step 2: Build docker image and run it by running `start_docker.sh`
 - `start_docker.sh` is found in ./shell_scripts
 
-#### Step 3: stop running container and remove image by running `stop_docker.sh` from a new terminal
+#### Step 3: Stop running container and remove image by running `stop_docker.sh` from a new terminal
 - `stop_docker.sh` is found in ./shell_scripts
 - Cypress tests results will then be copied over from inside the container to your local repo at ./cypress/reports
 
