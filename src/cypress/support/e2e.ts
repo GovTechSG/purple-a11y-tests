@@ -84,7 +84,8 @@ Cypress.Commands.add('checkResultFilesCreated', (cliOptionsJson, purpleA11yResul
     // TEST CASE: result zip created & naming is based on the flag -o
     return cy.task('checkFileExist', resultZipExpectedDir)
         .then((exists) => {
-            expect(exists, `result zip should be created & naming should be based on the flag -o / purpleA11yInit() if integration mode`).to.be.true;
+            expect(exists, `result zip should be created & naming should be based on the flag -o, or based on purpleA11yInit() if running integration mode`).to.be.true;
+            exists ? cy.task('deleteFile', resultZipExpectedDir) : undefined // delete result zip file so that next testcase can check if purplea11y scan did generate the result zip file
 
             // TEST CASE: result folder is created at directory based on the flag -e
             return cy.task('checkFileExist', `${cliOptionsJson.e}/${purpleA11yResultFolder}`)
@@ -188,21 +189,20 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 expect(scanDataDecodedJson.customFlowLabel, `scanData.customFlowLabel should be according to the flag -j`).to.equal(cliOptionsJson.j);
 
                 const blacklistedPatternsSet = new Set(Cypress.env("blacklistedPatterns"));
-                const urlsWithDiffHostnameSet = new Set(Cypress.env("diffHostnameUrl"));
-                const urlsMetaRedirectedSet = new Set(Cypress.env("metaRedirectedUrl"));
                 let isMetaRedirectedUrlScanned = false;
+                let isDiffHostnameUrlScanned = false;
 
                 scanDataDecodedJson.pagesScanned.forEach(page => {
+                    let pageUrl = normalizeUrl(page.url)
 
                     // TEST CASE: scanData.pagesScanned should not contain blacklisted urls according to the flag -x (blacklisted)
-                    expect(blacklistedPatternsSet.has(page.url), `scanData.pagesScanned should not contain ${page.url} according to the flag -x (blacklisted)`).to.be.false;
+                    expect(blacklistedPatternsSet.has(pageUrl), `scanData.pagesScanned should not contain ${pageUrl} according to the flag -x (blacklisted)`).to.be.false;
 
-                    // TEST CASE: scanData.pagesScanned should not contain certain links according to the flag -s (strategy)
-                    if (cliOptionsJson.s == "same-hostname") {
-                        expect(urlsWithDiffHostnameSet.has(page.url), `scanData.pagesScanned should not contain ${page.url} according to the flag -s (strategy)`).to.be.false
+                    if (pageUrl == Cypress.env("diffHostnameUrl")) {
+                        isDiffHostnameUrlScanned = true;
                     }
 
-                    if (urlsMetaRedirectedSet.has(page.url)) {
+                    if (pageUrl == Cypress.env("metaRedirectedUrl")) {
                         isMetaRedirectedUrlScanned = true;
                     }
                 });
@@ -215,7 +215,14 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 if (cliOptionsJson.c == Cypress.env("crawlDomainCliOption")) {
                     // TODO: this bug of the test case below is not fixed in purplea11y even though it should be
                     // TEST CASE: [crawlDomain] scanData.pagesScanned should contain meta redirected url
-                    // expect(isMetaRedirectedUrlScanned, "scanData.pagesScanned should contain meta redirected url (/7.html)").to.be.ok;
+                    // expect(isMetaRedirectedUrlScanned, "scanData.pagesScanned should contain meta redirected url (/7.html)").to.be.true;
+
+                    // TEST CASE: scanData.pagesScanned should not contain certain links according to the flag -s (strategy)
+                    if (cliOptionsJson.s == "same-hostname") {
+                        expect(isDiffHostnameUrlScanned, `scanData.pagesScanned should not contain urls of different hostname according to the flag -s (strategy)`).to.be.false;
+                    } else if (cliOptionsJson.s == "same-domain") {
+                        expect(isDiffHostnameUrlScanned, `scanData.pagesScanned should contain urls of different hostname but same domain according to the flag -s (strategy)`).to.be.true;
+                    }
 
                     // TEST CASE: [crawlDomain] customEnqueueLinksByClickingElements & enqueueLinks functions work
                     Cypress.env("crawlDomainEnqueueProcessUrls").forEach(expectedUrl => {

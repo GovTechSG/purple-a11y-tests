@@ -58,8 +58,8 @@ let mainTestHomePageUrl;
 
 if (process.env.RUNNING_TESTS_OUTSIDE_DOCKER) {
     // live hosted websites
-    diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test/"
-    mainTestHomePageUrl = "https://leeyixuan21.github.io/"
+    diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test"
+    mainTestHomePageUrl = "https://leeyixuan21.github.io"
 } else {
     // websites hosted by docker container only
     diffHostnameUrl = "http://diffHostname.purplea11y.com:8000"
@@ -76,7 +76,8 @@ const commonCliOptions = {
     "e": `${getProjectRootDirectory()}/purpleA11yResults`, 
     "j": "purple a11y test label",
     "k": `${name}:${email}`,
-    "x": `${getProjectRootDirectory()}/blacklistedPatterns.txt`
+    "x": `${getProjectRootDirectory()}/blacklistedPatterns.txt`,
+    "b": "chromium"
 }
 
 const localFilesFolderDirectory = `${getProjectRootDirectory()}/localFilesForTesting`
@@ -109,8 +110,7 @@ const purpleA11y = await purpleA11yInit(
 const cliOptionsJsonA = {
     ...commonCliOptions,
     "d": "Desktop",
-    "p": 120,  //120
-    "b": "chromium", 
+    "p": 100,  //120
     "t": "20",
     "i": "all", // KIV: need to vary (pdf-only/html-only) for B & C once we are able to create pdfs with accessibility issues
     "a": "screenshots" 
@@ -119,8 +119,7 @@ const cliOptionsJsonA = {
 const cliOptionsJsonB = {
     ...commonCliOptions,
     "d": "Mobile",
-    "p": 110, //110
-    "b": "chrome", 
+    "p": 100, //110
     "t": "15",
     "i": "all",
     "a": "none" 
@@ -130,7 +129,6 @@ const cliOptionsJsonC = {
     ...commonCliOptions,
     "w": 350,
     "p": 100, //100
-    "b": "edge", 
     "t": "10",
     "i": "all",
     "a": "screenshots" 
@@ -234,9 +232,11 @@ export default defineConfig({
                 },
                 readFile(filename) {
                     return fs.readFileSync(filename, { encoding: "utf-8" })
+                },
+                deleteFile(filename) {
+                    fs.unlinkSync(filename);
+                    return true;
                 }
-                
-                
             });
             return config;
         },
