@@ -33,13 +33,24 @@ cd ../../../
 ## How to run using docker container via colima
 
 #### Prerequisites: 
-Install colima & docker then do `colima start`
+Ensure that [Colima](https://github.com/abiosoft/colima) and [Docker](https://www.docker.com/get-started) are installed.
 
-#### To begin, build docker image and run it by running `start_docker.sh`:
+#### Step 1: Start colima using
+```
+colima start
+```
+
+#### Step 2: Build docker image and run it by running `start_docker.sh`
 - `start_docker.sh` is found in ./shell_scripts
 
-#### To end, stop running container and remove image by running `stop_docker.sh`:
+#### Step 3: stop running container and remove image by running `stop_docker.sh` from a new terminal
 - `stop_docker.sh` is found in ./shell_scripts
+- Cypress tests results will then be copied over from inside the container to your local repo at ./cypress/reports
+
+#### Step 4: Stop colima using
+```
+colima stop
+```
 
 ## TODO
 1) In functional test website home page, add anchor tag to download .exe file. (just uncomment it, its temporarily commented out) - do this when this bug is fixed
