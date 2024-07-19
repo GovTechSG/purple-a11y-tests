@@ -110,7 +110,6 @@ const cliOptionsJsonA = {
     ...commonCliOptions,
     "d": "Desktop",
     "p": 10,  //120
-    "h": "yes", 
     "b": "chromium", 
     "t": "20",
     "i": "all", // KIV: need to vary (pdf-only/html-only) for B & C once we are able to create pdfs with accessibility issues
@@ -121,7 +120,6 @@ const cliOptionsJsonB = {
     ...commonCliOptions,
     "d": "Mobile",
     "p": 10, //110
-    "h": "no",
     "b": "chrome", 
     "t": "15",
     "i": "all",
@@ -132,7 +130,6 @@ const cliOptionsJsonC = {
     ...commonCliOptions,
     "w": 350,
     "p": 10, //100
-    "h": "yes",
     "b": "edge", 
     "t": "10",
     "i": "all",
