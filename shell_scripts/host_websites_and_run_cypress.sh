@@ -20,8 +20,3 @@ echo "Starting Cypress tests..."
 
 # Run Cypress tests concurrently in the purple-a11y-tests directory
 npx cypress run
-
-# # Loop to keep the container running
-# while :; do
-#   sleep 3600 # Sleep for 24 days
-# done

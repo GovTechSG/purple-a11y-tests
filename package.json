@@ -21,5 +21,8 @@
     "mochawesome-report-generator": "^6.2.0",
     "safe-regex": "^2.1.1",
     "typescript": "^5.5.2"
+  },
+  "dependencies": {
+    "@govtechsg/purple-hats": "github:GovTechSG/purple-hats#master"
   }
 }

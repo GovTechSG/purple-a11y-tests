@@ -1,7 +1,7 @@
 import 'cypress-mochawesome-reporter/register';
 
 Cypress.Commands.add("injectPurpleA11yScripts", () => {
-    cy.task("getPurpleA11yScripts").then((s) => {
+    cy.task("getPurpleA11yScripts").then((s: string) => {
         cy.window().then((win) => {
             win.eval(s);
         });
@@ -131,7 +131,7 @@ Cypress.Commands.add('checkResultFilesCreated', (cliOptionsJson, purpleA11yResul
 
 Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResultFolder, isIntegrationMode = false) => {
     return cy.task('readFile', `${cliOptionsJson.e}/${purpleA11yResultFolder}/report.html`)
-        .then((reportHtmlData) => {
+        .then((reportHtmlData: string) => {
             const scanDataEncoded = reportHtmlData.match(/scanData\s*=\s*base64Decode\('([^']+)'\)/)[1];
             const scanDataDecodedJson = base64Decode(scanDataEncoded);
 

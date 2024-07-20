@@ -48,6 +48,9 @@ RUN echo $'<?xml version="1.0" encoding="UTF-8" standalone="no"?> \n\
 # Copy package.json to working directory, perform npm install before copying the remaining files
 COPY package*.json ./
 
+# deletes the line containing "@govtechsg/purple-hats" from the package.json, if present
+RUN sed -i '/"@govtechsg\/purple-hats":/d' package.json
+
 # Environment variables for node and Playwright
 ENV NODE_ENV=dev
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="true"

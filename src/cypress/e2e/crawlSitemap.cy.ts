@@ -1,4 +1,4 @@
-import { getCliCommand } from '../support/e2e';
+import { getCliCommand } from '../support/e2e.js';
 
 const constantCliOptionsJson = { "c": Cypress.env("crawlSitemapCliOption") }
 
