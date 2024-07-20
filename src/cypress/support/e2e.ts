@@ -164,8 +164,9 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 normalizedUrl = normalizedUrl.toLowerCase();
                 return normalizedUrl;
             };
-            expect(normalizeUrl(scanDataDecodedJson.urlScanned), `scanData.urlScanned should be according to the flag -u`).to.equal(normalizeUrl(cliOptionsJson.u));
-
+            if (cliOptionsJson.u != Cypress.env("mainTestBasicAuthUrl")) {
+                expect(normalizeUrl(scanDataDecodedJson.urlScanned), `scanData.urlScanned should be according to the flag -u`).to.equal(normalizeUrl(cliOptionsJson.u));
+            }
 
             // TEST CASE: scanData.viewport should be according what viewport was set in purpleA11yInit()
             if (isIntegrationMode) {
@@ -196,7 +197,9 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                     let pageUrl = normalizeUrl(page.url)
 
                     // TEST CASE: scanData.pagesScanned should not contain blacklisted urls according to the flag -x (blacklisted)
-                    expect(blacklistedPatternsSet.has(pageUrl), `scanData.pagesScanned should not contain ${pageUrl} according to the flag -x (blacklisted)`).to.be.false;
+                    if (blacklistedPatternsSet.has(pageUrl)) {
+                        expect(blacklistedPatternsSet.has(pageUrl), `scanData.pagesScanned should not contain ${pageUrl} according to the flag -x (blacklisted)`).to.be.false;
+                    }
 
                     if (pageUrl == Cypress.env("diffHostnameUrl")) {
                         isDiffHostnameUrlScanned = true;
@@ -212,7 +215,8 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                 const uniquePagesScannedUrls = new Set(pagesScannedurls);
                 expect(uniquePagesScannedUrls.size, `scanData.pagesScanned should not have any duplicates`).to.equal(pagesScannedurls.length);
 
-                if (cliOptionsJson.c == Cypress.env("crawlDomainCliOption")) {
+                //testcases specific to crawlDomain scan mode
+                if (cliOptionsJson.c == Cypress.env("crawlDomainCliOption") && cliOptionsJson.u != Cypress.env("mainTestBasicAuthUrl")) {
                     // TODO: this bug of the test case below is not fixed in purplea11y even though it should be
                     // TEST CASE: [crawlDomain] scanData.pagesScanned should contain meta redirected url
                     // expect(isMetaRedirectedUrlScanned, "scanData.pagesScanned should contain meta redirected url (/7.html)").to.be.true;
@@ -228,6 +232,11 @@ Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResul
                     Cypress.env("crawlDomainEnqueueProcessUrls").forEach(expectedUrl => {
                         expect(pagesScannedurls).to.include(expectedUrl, `URL ${expectedUrl} should be in scanData.pagesScanned to verify that customEnqueueLinksByClickingElements & enqueueLinks functions work`);
                     });
+                }
+
+                // TEST CASE: Basic auth functionality: There should be more than 90 pages scanned in the basic auth website, which has 100 anchor tags to pages with basic auth
+                if (cliOptionsJson.u == Cypress.env("mainTestBasicAuthUrl")) {
+                    expect(scanDataDecodedJson.totalPagesScanned, `[crawl domain basic auth functionality] scanData.totalPagesScanned should be > 90 for scanning the basic auth main website which has 100 anchor tags to pages with basic auths`).to.be.gt(90)
                 }
 
             }

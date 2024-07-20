@@ -52,6 +52,15 @@ const scanModeCliOption = {
     "crawlLocalFile": "5",
 }
 
+const addBasicAuthToUrl = (url: string) => {
+    const parsedUrl = new URL(url);
+    
+    // Add the username and password to the URL. The basic auth username and pw of the basic auth website is set to be "username" and "password"
+    parsedUrl.username = "username";
+    parsedUrl.password = "password";
+    return parsedUrl.toString();
+}
+
 //urls
 let diffHostnameUrl;
 let mainTestHomePageUrl;
@@ -62,7 +71,7 @@ if (process.env.RUNNING_TESTS_OUTSIDE_DOCKER) {
     mainTestHomePageUrl = "https://leeyixuan21.github.io"
 } else {
     // websites hosted by docker container only
-    diffHostnameUrl = "http://diffHostname.purplea11y.com:8000"
+    diffHostnameUrl = "http://diffhostname.purplea11y.com:8000"
     mainTestHomePageUrl = "http://main.purplea11y.com:8000"
 }
 
@@ -70,6 +79,7 @@ const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`
 const mainTestSitemapRssUrl = `${mainTestHomePageUrl}/sitemap.rss`
 const mainTestSitemapAtomUrl = `${mainTestHomePageUrl}/sitemap.atom`
 const metaRedirectedUrl = `${mainTestHomePageUrl}/7.html`
+const mainTestBasicAuthUrl = addBasicAuthToUrl(`${mainTestHomePageUrl}/basicauth.html`);
 
 const commonCliOptions = {
     "o": "purple_a11y_test",
@@ -192,6 +202,7 @@ export default defineConfig({
             config.env.crawlLocalFileCliOption = scanModeCliOption.crawlLocalFile;
             config.env.diffHostnameUrl = diffHostnameUrl;
             config.env.metaRedirectedUrl = metaRedirectedUrl;
+            config.env.mainTestBasicAuthUrl = mainTestBasicAuthUrl;
             config.env.mainTestHomePageUrl = mainTestHomePageUrl;
             config.env.mainTestSitemapXmlUrl = mainTestSitemapXmlUrl;
             config.env.mainTestSitemapRssUrl = mainTestSitemapRssUrl;
