@@ -48,7 +48,7 @@ colima start
 
 #### Step 3: Stop running container and remove image by running `stop_docker.sh` from a new terminal
 - `stop_docker.sh` is found in ./shell_scripts
-- Cypress tests results will then be copied over from inside the container to your local repo at ./cypress/reports
+- Cypress tests report will then be copied over from inside the container to your local repo at ./cypress/reports
 
 #### Step 4: Stop colima
 ```
