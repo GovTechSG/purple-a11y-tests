@@ -50,27 +50,27 @@ const base64Decode = (data) => {
 };
 
 Cypress.Commands.add('runPurpleA11yProcess', (cliOptionsJson) => {
-    let purpleA11yResultFolder;
-    const cliCommand = getCliCommand(cliOptionsJson);
-    return cy.exec(cliCommand, { failOnNonZeroExit: false, timeout: 420000 })
-        .then((result) => {
-
-            // TEST CASE: scan process complete successfully
-            expect(result.stdout, "stdout should be non-empty after Purple A11y process completes").to.not.be.empty;
-
-
-            const purpleA11yResultsPathRegex = result.stdout.match(/Results directory is at (\S+)/);
-
-            // TEST CASE: result directory is printed in stdout
-            expect(purpleA11yResultsPathRegex, "result directory should be printed in stdout").to.be.ok;
-
-            let purpleA11yResultsPath;
-            purpleA11yResultsPath = purpleA11yResultsPathRegex[1];
-            const lastSlashIndex = purpleA11yResultsPath.lastIndexOf('/');
-            purpleA11yResultFolder = purpleA11yResultsPath.substring(lastSlashIndex + 1);
-            return purpleA11yResultFolder
+    return cy.task('deleteFile', Cypress.env("purpleA11yErrorsTxtPath"))
+        .then(() => {
+            const cliCommand = getCliCommand(cliOptionsJson);
+            return cy.exec(cliCommand, { failOnNonZeroExit: false, timeout: 420000 })
         })
-})
+        .then((result) => {
+            const purpleA11yResultsPathRegex = result.stdout.match(/Results directory is at (\S+)/);
+            if (!purpleA11yResultsPathRegex) {
+                return cy.task('readFile', Cypress.env("purpleA11yErrorsTxtPath"))
+                    .then((errorsTxt) => {
+                        // TEST CASE: result directory is printed in stdout
+                        expect(purpleA11yResultsPathRegex, `result directory should be printed in stdout. errors.txt: ${errorsTxt}`).to.be.ok;
+                    });
+            } else {
+                let purpleA11yResultsPath = purpleA11yResultsPathRegex[1];
+                const lastSlashIndex = purpleA11yResultsPath.lastIndexOf('/');
+                let purpleA11yResultFolder = purpleA11yResultsPath.substring(lastSlashIndex + 1);
+                return purpleA11yResultFolder;
+            }
+        });
+});
 
 Cypress.Commands.add('checkResultFilesCreated', (cliOptionsJson, purpleA11yResultFolder, isIntegrationMode = false) => {
     let resultZipExpectedDir;

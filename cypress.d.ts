@@ -3,7 +3,7 @@ declare namespace Cypress {
     injectPurpleA11yScripts(): Chainable<void>;
     runPurpleA11yScan(options?: PurpleA11yScanOptions): Chainable<void>;
     terminatePurpleA11y(): Chainable<any>;
-    runPurpleA11yProcess(cliOptionsJson: CliOptionsJson): Chainable<void>;
+    runPurpleA11yProcess(cliOptionsJson: CliOptionsJson): Chainable<unknown>;
     checkResultFilesCreated(cliOptionsJson: CliOptionsJson, purpleA11yResultFolder: string, isIntegrationMode?: boolean): Chainable<unknown>;
     checkReportHtmlScanData(cliOptionsJson: CliOptionsJson, purpleA11yResultFolder: string, isIntegrationMode?: boolean): Chainable<unknown>;
   }

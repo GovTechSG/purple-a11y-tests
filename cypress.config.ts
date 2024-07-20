@@ -142,6 +142,7 @@ const cliOptionsJsonC = {
 
 
 const purpleA11yPath = "node_modules/@govtechsg/purple-hats"
+const purpleA11yErrorsTxtPath = `${purpleA11yPath}/errors.txt`
 
 const getBlackListedPatterns = (blacklistedPatternsFilename: string|null): string[] | null=> {
     let exclusionsFile: any = null;
@@ -191,6 +192,7 @@ export default defineConfig({
             config.env.cliOptionsJsonC = cliOptionsJsonC;
             config.env.cliOptionsJsonIntegration  = cliOptionsJsonIntegration;
             config.env.purpleA11yPath = purpleA11yPath;
+            config.env.purpleA11yErrorsTxtPath = purpleA11yErrorsTxtPath;
             config.env.blacklistedPatterns = blacklistedPatterns;
             config.env.crawlDomainEnqueueProcessUrls = crawlDomainEnqueueProcessUrls;
             config.env.crawlDomainCliOption = scanModeCliOption.crawlDomain;
@@ -241,7 +243,9 @@ export default defineConfig({
                     return fs.readFileSync(filename, { encoding: "utf-8" })
                 },
                 deleteFile(filename) {
-                    fs.unlinkSync(filename);
+                    if (fs.existsSync(filename)){
+                        fs.unlinkSync(filename);
+                    }
                     return true;
                 }
             });
