@@ -20,7 +20,6 @@ Cypress.Commands.add("runPurpleA11yScan", (items = {}) => {
 Cypress.Commands.add("terminatePurpleA11y", () => {
     return cy.task("terminatePurpleA11y")
         .then((randomToken) => {
-            // cy.log('randomToken A:', randomToken);
             return randomToken
         });
 });
