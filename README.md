@@ -23,8 +23,6 @@ shell_scripts/host_websites_and_run_cypress.sh git+https://github.com/GovTechSG/
 ```
 - After running the `host_websites_and_run_cypress.sh` script, find generated cypress report under /cypress/reports/index.html from project root directory.  
 
-- To change the branch of Purple A11y you want to test, edit the `host_websites_and_run_cypress.sh` script accordingly (temporarily)
-
 - If you make code changes in the `src` folder, ensure you do `npm run build` to compile the typescript into the `dist` folder.
 
 ## How to run using docker container via colima
