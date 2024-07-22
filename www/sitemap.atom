@@ -2,19 +2,19 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
     <title>Localhost URLs</title>
-    <link href="https://leeyixuan21.github.io/" rel="self"/>
+    <link href="https://main.purplea11y.local:8000/" rel="self"/>
     <updated>2024-06-28T00:00:00Z</updated>
     <author>
         <name>Your Name</name>
     </author>
-    <id>https://leeyixuan21.github.io/</id>
+    <id>https://main.purplea11y.local:8000/</id>
 
     <entry>
-        <title>https://leeyixuan21.github.io/1.html</title>
-        <link href="https://leeyixuan21.github.io/1.html"/>
+        <title>https://main.purplea11y.local:8000/1.html</title>
+        <link href="https://main.purplea11y.local:8000/1.html"/>
         <updated>2024-06-28T00:00:00Z</updated>
-        <id>https://leeyixuan21.github.io/1.html</id>
-        <summary type="html">Summary for https://leeyixuan21.github.io/1.html</summary>
+        <id>https://main.purplea11y.local:8000/1.html</id>
+        <summary type="html">Summary for https://main.purplea11y.local:8000/1.html</summary>
     </entry>
     <entry>
         <title>http://main.purplea11y.local:8000/2.html</title>

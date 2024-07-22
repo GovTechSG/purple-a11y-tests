@@ -8,7 +8,7 @@ npm run build
 ## Change to www
 cd ./www
 
-# Run Python HTTP server in the leeyixuan21.github.io directory
+# Run Python HTTP server in the www directory
 python3 http_server_auth.py --bind 0.0.0.0 --port 8000 &
 
 # Save the PID of the background process

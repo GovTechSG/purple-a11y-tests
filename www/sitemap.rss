@@ -2,14 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Localhost Site URLs</title>
-        <link>https://leeyixuan21.github.io/</link>
+        <link>https://main.purplea11y.local:8000/</link>
         <description>URLs of localhost site pages</description>
-        <atom:link href="https://leeyixuan21.github.io/sitemap.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://main.purplea11y.local:8000/sitemap.xml" rel="self" type="application/rss+xml" />
         
         <!-- URLs from sitemap -->
         <item>
-            <title>https://leeyixuan21.github.io/1.html</title>
-            <link>https://leeyixuan21.github.io/1.html</link>
+            <title>https://main.purplea11y.local:8000/1.html</title>
+            <link>https://main.purplea11y.local:8000/1.html</link>
         </item>
         <item>
             <title>http://main.purplea11y.local:8000/2.html</title>
