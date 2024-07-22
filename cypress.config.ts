@@ -63,15 +63,10 @@ const addBasicAuthToUrl = (url: string) => {
 let diffHostnameUrl;
 let mainTestHomePageUrl;
 
-if (process.env.FUNCTIONAL_TESTS_IN_DOCKER) {
-    // websites hosted by docker container only
-    diffHostnameUrl = "http://diffhostname.purplea11y.local:8000"
-    mainTestHomePageUrl = "http://main.purplea11y.local:8000"
-} else {
-    // live hosted websites
-    diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test"
-    mainTestHomePageUrl = "https://leeyixuan21.github.io"
-}
+// Please check ./host_websites_and_run_cypress.sh for details
+// Set diffhostname.purplea11y.local and main.purplea11y.local to be resolvable in /etc/hosts
+diffHostnameUrl = "http://diffhostname.purplea11y.local:8000"
+mainTestHomePageUrl = "http://main.purplea11y.local:8000"
 
 const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`
 const mainTestSitemapRssUrl = `${mainTestHomePageUrl}/sitemap.rss`

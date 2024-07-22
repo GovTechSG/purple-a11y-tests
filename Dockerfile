@@ -74,16 +74,6 @@ COPY . .
 # Compile typescript for cypress test repo
 RUN npm run build || true
 
-# Install desired branch of Purple A11y
-RUN npm install git+https://github.com/GovTechSG/purple-hats.git#master
-
-# Navigate to purple-hats directory, install dependencies, and build
-RUN cd node_modules/@govtechsg/purple-hats && \
-    npm install && \
-    npx playwright install chromium && \
-    npm run build || true && \
-    cd ../../../
-
 # Make sure the shell scripts are executable
 RUN chmod +x ./shell_scripts/host_websites_and_run_cypress.sh
 RUN chmod +x ./shell_scripts/start_docker.sh
