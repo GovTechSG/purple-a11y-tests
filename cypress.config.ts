@@ -240,7 +240,11 @@ export default defineConfig({
                     return fs.existsSync(filename)
                 },
                 readFile(filename) {
-                    return fs.readFileSync(filename, { encoding: "utf-8" })
+                    if (fs.existsSync(filename)) {
+                        return fs.readFileSync(filename, { encoding: "utf-8" })
+                    } else {
+                        return null
+                    }
                 },
                 deleteFile(filename) {
                     if (fs.existsSync(filename)){

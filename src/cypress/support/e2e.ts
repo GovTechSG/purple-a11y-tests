@@ -60,6 +60,9 @@ Cypress.Commands.add('runPurpleA11yProcess', (cliOptionsJson) => {
             if (!purpleA11yResultsPathRegex) {
                 return cy.task('readFile', Cypress.env("purpleA11yErrorsTxtPath"))
                     .then((errorsTxt) => {
+                        if (!errorsTxt) {
+                            errorsTxt = "empty";
+                        }
                         // TEST CASE: result directory is printed in stdout
                         expect(purpleA11yResultsPathRegex, `result directory should be printed in stdout. errors.txt: ${errorsTxt}`).to.be.ok;
                     });
