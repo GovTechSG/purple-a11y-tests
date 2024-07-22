@@ -5,32 +5,27 @@
  - Docker can only run chromium in headless mode, using chrome and edge for Purple A11y will not be tested
 
 ## How to run locally
+#### Step 1: 
+- Edit the /etc/hosts file by running `sudo nano /etc/hosts` in terminal.
+- At the end of the file, add these new lines with the following format:
+```
+127.0.0.1    main.purplea11y.local
+127.0.0.1    diffHostname.purplea11y.local
+```
+This is needed to test the `strategy` flag in Purple A11y.
+
+#### Step 2: 
+- Install dependencies then run the `host_websites_and_run_cypress.sh` script, which hosts the functional test website on a python server then runs the cypress tests.    
+Note: The `host_websites_and_run_cypress.sh` script accepts an argument that specifies the package of Purple A11y you want to test. To test your specific branch of Purple A11y, just change "master" with your preferred branch. (see below)
 ```
 npm install
-npm run build
-npx cypress run
+shell_scripts/host_websites_and_run_cypress.sh git+https://github.com/GovTechSG/purple-a11y.git#master
 ```
-- After `npx cypress run`, find generated cypress report under /cypress/reports/index.html from project root directory.  
+- After running the `host_websites_and_run_cypress.sh` script, find generated cypress report under /cypress/reports/index.html from project root directory.  
 
-- To see more detailed loggings, you can use `npx cypress open` instead of `npx cypress run`
+- To change the branch of Purple A11y you want to test, edit the `host_websites_and_run_cypress.sh` script accordingly (temporarily)
 
-- Live hosted urls: 
-  - https://leeyixuan21.github.io/
-  - https://lrperzus.github.io/purple-a11y-strategy-test/
-- Docker hosted urls: 
-  - http://main.purplea11y.local:8000
-  - http://diffHostname.purplea11y.local:8000
-
-#### How to change the branch of Purple A11y you want to test
-1) Uninstall Purple A11y by running `npm uninstall @govtechsg` then install the desired branch of Purple A11y by running `npm install git+https://github.com/GovTechSG/purple-a11y.git#your-branch-here`. (Replace "your-branch-here" with your branch name)
-2) Next, set up PurpleA11y accordingly:
-```
-cd node_modules/@govtechsg/purple-hats
-npm install
-npx playwright install chromium 
-npm run build
-cd ../../../
-```
+- If you make code changes in the `src` folder, ensure you do `npm run build` to compile the typescript into the `dist` folder.
 
 ## How to run using docker container via colima
 
@@ -44,12 +39,17 @@ Ensure that you have these installed:
 colima start
 ```
 
-#### Step 2: Build docker image and run it by running `start_docker.sh`
-- `start_docker.sh` is found in ./shell_scripts
+#### Step 2: Host functional test website on python server and run functional tests
+Note: The `start_docker.sh` script accepts an argument that specifies the package of Purple A11y you want to test. To test your specific branch of Purple A11y, just change "master" with your preferred branch. (see below)
+```
+shell_scripts/start_docker.sh git+https://github.com/GovTechSG/purple-a11y.git#master
+```
 
 #### Step 3: Stop running container and remove image by running `stop_docker.sh` from a new terminal
-- `stop_docker.sh` is found in ./shell_scripts
-- Cypress tests report will then be copied over from inside the container to your local repo at ./cypress/reports
+```
+shell_scripts/stop_docker.sh
+```
+- Cypress tests report will then be copied over from inside the container to your local repo at ./cypress/reports (view `index.html` for report)
 
 #### Step 4: Stop colima
 ```

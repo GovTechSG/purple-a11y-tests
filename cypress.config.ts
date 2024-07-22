@@ -86,7 +86,7 @@ const commonCliOptions = {
   p: 100,
 }
 
-const localFilesFolderDirectory = `${getProjectRootDirectory()}/www`
+const localFilesFolderDirectory = `${getProjectRootDirectory()}/localFilesForTesting`
 const localHtmlFileDirectory = `${localFilesFolderDirectory}/a.html`
 const localHtmFileDirectory = `${localFilesFolderDirectory}/b.htm`
 const localXhtmlFileDirectory = `${localFilesFolderDirectory}/c.xhtml`
