@@ -12,7 +12,16 @@ cd ./www
 python3 http_server_auth.py --bind 0.0.0.0 --port 8000 &
 
 # Save the PID of the background process
-pid=$!
+python_pid=$!
+
+# Function to kill the Python server
+cleanup() {
+  echo "Killing the Python server with PID $python_pid"
+  kill $python_pid
+}
+
+# Trap the EXIT signal to run the cleanup function
+trap cleanup EXIT
 
 echo "Python HTTP Server running at pid $pid"
 
@@ -32,7 +41,4 @@ cd node_modules/@govtechsg/purple-hats && \
 echo "Starting Cypress tests..."
 
 # Run Cypress tests concurrently in the purple-a11y-tests directory
-npx cypress run || true
-
-# Kill Python server
-kill $pid
+npx cypress run
