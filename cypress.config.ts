@@ -82,7 +82,7 @@ const commonCliOptions = {
   j: 'purple a11y test label',
   k: `${name}:${email}`,
   x: `${getProjectRootDirectory()}/blacklistedPatterns.txt`,
-  b: 'chromium',
+  b: process.platform === "darwin" || process.platform === "win32" ? "chrome" : "chromium",
   p: 100,
 }
 
