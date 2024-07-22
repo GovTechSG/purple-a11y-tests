@@ -82,7 +82,10 @@ const commonCliOptions = {
   j: 'purple a11y test label',
   k: `${name}:${email}`,
   x: `${getProjectRootDirectory()}/blacklistedPatterns.txt`,
-  b: process.platform === "darwin" || process.platform === "win32" ? "chrome" : "chromium",
+  b:
+    process.platform === 'darwin' || process.platform === 'win32'
+      ? 'chrome'
+      : 'chromium',
   p: 100,
 }
 
@@ -135,6 +138,12 @@ const cliOptionsJsonC = {
   t: '10',
   i: 'all',
   a: 'screenshots',
+}
+
+const cliOptionsCustomFlow = {
+  ...commonCliOptions,
+  u: 'https://www.tech.gov.sg',
+  h: 'no',
 }
 
 const purpleA11yPath = 'node_modules/@govtechsg/purple-hats'
@@ -192,6 +201,7 @@ export default defineConfig({
       config.env.cliOptionsJsonB = cliOptionsJsonB
       config.env.cliOptionsJsonC = cliOptionsJsonC
       config.env.cliOptionsJsonIntegration = cliOptionsJsonIntegration
+      config.env.cliOptionsCustomFlow = cliOptionsCustomFlow
       config.env.purpleA11yPath = purpleA11yPath
       config.env.purpleA11yErrorsTxtPath = purpleA11yErrorsTxtPath
       config.env.blacklistedPatterns = blacklistedPatterns
