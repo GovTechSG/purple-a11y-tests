@@ -8,19 +8,18 @@
 ```
 npm install
 npm run build
-RUNNING_TESTS_OUTSIDE_DOCKER=true npx cypress run
+npx cypress run
 ```
-- `RUNNING_TESTS_OUTSIDE_DOCKER` environment variable is to set the urls to scan to be the live hosted urls, not the urls that is hosted only in docker
-  - Live hosted urls: 
-    - https://leeyixuan21.github.io/
-    - https://lrperzus.github.io/purple-a11y-strategy-test/
-  - Docker hosted urls: 
-    - http://main.purplea11y.local:8000
-    - http://diffHostname.purplea11y.local:8000
-
 - After `npx cypress run`, find generated cypress report under /cypress/reports/index.html from project root directory.  
 
 - To see more detailed loggings, you can use `npx cypress open` instead of `npx cypress run`
+
+- Live hosted urls: 
+  - https://leeyixuan21.github.io/
+  - https://lrperzus.github.io/purple-a11y-strategy-test/
+- Docker hosted urls: 
+  - http://main.purplea11y.local:8000
+  - http://diffHostname.purplea11y.local:8000
 
 #### How to change the branch of Purple A11y you want to test
 1) Uninstall Purple A11y by running `npm uninstall @govtechsg` then install the desired branch of Purple A11y by running `npm install git+https://github.com/GovTechSG/purple-a11y.git#your-branch-here`. (Replace "your-branch-here" with your branch name)

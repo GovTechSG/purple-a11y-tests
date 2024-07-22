@@ -63,14 +63,14 @@ const addBasicAuthToUrl = (url: string) => {
 let diffHostnameUrl;
 let mainTestHomePageUrl;
 
-if (process.env.RUNNING_TESTS_OUTSIDE_DOCKER) {
-    // live hosted websites
-    diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test"
-    mainTestHomePageUrl = "https://leeyixuan21.github.io"
-} else {
+if (process.env.FUNCTIONAL_TESTS_IN_DOCKER) {
     // websites hosted by docker container only
     diffHostnameUrl = "http://diffhostname.purplea11y.local:8000"
     mainTestHomePageUrl = "http://main.purplea11y.local:8000"
+} else {
+    // live hosted websites
+    diffHostnameUrl = "https://lrperzus.github.io/purple-a11y-strategy-test"
+    mainTestHomePageUrl = "https://leeyixuan21.github.io"
 }
 
 const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`

@@ -56,6 +56,7 @@ ENV NODE_ENV=dev
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="true"
 ENV PLAYWRIGHT_BROWSERS_PATH="/opt/ms-playwright"
 ENV PATH="/opt/verapdf:${PATH}"
+ENV FUNCTIONAL_TESTS_IN_DOCKER="true"
 
 # Install dependencies
 RUN npm ci
