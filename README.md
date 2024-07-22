@@ -21,7 +21,7 @@ Note: The `host_websites_and_run_cypress.sh` script accepts an argument that spe
 npm install
 shell_scripts/host_websites_and_run_cypress.sh git+https://github.com/GovTechSG/purple-a11y.git#master
 ```
-- After running the `host_websites_and_run_cypress.sh` script, find generated cypress report under /cypress/reports/index.html from project root directory.  
+- After running the `shell_scripts/host_websites_and_run_cypress.sh` script, find generated cypress report under `./cypress/reports/index.html` from project root directory.  
 
 - If you make code changes in the `src` folder, ensure you do `npm run build` to compile the typescript into the `dist` folder.
 
