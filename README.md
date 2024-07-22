@@ -15,8 +15,8 @@ RUNNING_TESTS_OUTSIDE_DOCKER=true npx cypress run
     - https://leeyixuan21.github.io/
     - https://lrperzus.github.io/purple-a11y-strategy-test/
   - Docker hosted urls: 
-    - http://main.purplea11y.com:8000
-    - http://diffHostname.purplea11y.com:8000
+    - http://main.purplea11y.local:8000
+    - http://diffHostname.purplea11y.local:8000
 
 - After `npx cypress run`, find generated cypress report under /cypress/reports/index.html from project root directory.  
 

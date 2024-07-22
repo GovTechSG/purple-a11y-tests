@@ -69,8 +69,8 @@ if (process.env.RUNNING_TESTS_OUTSIDE_DOCKER) {
     mainTestHomePageUrl = "https://leeyixuan21.github.io"
 } else {
     // websites hosted by docker container only
-    diffHostnameUrl = "http://diffhostname.purplea11y.com:8000"
-    mainTestHomePageUrl = "http://main.purplea11y.com:8000"
+    diffHostnameUrl = "http://diffhostname.purplea11y.local:8000"
+    mainTestHomePageUrl = "http://main.purplea11y.local:8000"
 }
 
 const mainTestSitemapXmlUrl = `${mainTestHomePageUrl}/sitemap.xml`
