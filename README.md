@@ -1,10 +1,7 @@
 # purple-a11y-tests
-#### Functional tests for [Purple A11y](https://github.com/govtechsg/purple-a11y)
+#### [Cypress](https://www.cypress.io/) functional tests for [Purple A11y](https://github.com/govtechsg/purple-a11y) to verify the correctness of Purple A11y CLI and integration module.
 
-#### Limitations
- - Docker can only run chromium in headless mode, using chrome and edge for Purple A11y will not be tested
-
-## How to run locally
+## Run Locally
 #### Step 1: 
 - Edit the /etc/hosts file by running `sudo nano /etc/hosts` in terminal.
 - At the end of the file, add these new lines with the following format:
@@ -25,11 +22,11 @@ shell_scripts/host_websites_and_run_cypress.sh git+https://github.com/GovTechSG/
 
 - If you make code changes in the `src` folder, ensure you do `npm run build` to compile the typescript into the `dist` folder.
 
-## How to run using docker container via colima
+## Run via Docker Container
 
 #### Prerequisites: 
 Ensure that you have these installed:
-- [Colima](https://github.com/abiosoft/colima)
+- [Colima](https://github.com/abiosoft/colima) on MacOS, or Docker Engine on Linux or Windows (via Linux VM)
 - Docker (install via `brew install docker`)
 
 #### Step 1: Start colima
@@ -53,4 +50,7 @@ shell_scripts/stop_docker.sh
 ```
 colima stop
 ```
+
+## Limitations
+ - Docker can only run chromium in headless mode, using chrome and edge for Purple A11y will not be tested
 
