@@ -4,7 +4,7 @@ FROM python:3.9-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Installation of packages for purple-a11y and chromium
+# Installation of packages for purple-a11y and chromium in alpine
 # RUN apk add build-base gcompat g++ make python3 zip bash git chromium openjdk11-jre xvfb
 
 # Install necessary dependencies and Node.js
@@ -36,14 +36,12 @@ RUN echo $'<?xml version="1.0" encoding="UTF-8" standalone="no"?> \n\
     <com.izforge.izpack.panels.finish.FinishPanel id="finish"/> \n\
 </AutomatedInstallation> ' >> /opt/verapdf-auto-install-docker.xml
 
+# TODO: Install OpenJDK to install VeraPDF
 #RUN wget "https://github.com/GovTechSG/purple-a11y/releases/download/cache/verapdf-installer.zip" -P /opt
 #RUN unzip /opt/verapdf-installer.zip -d /opt
 #RUN latest_version=$(ls -d /opt/verapdf-greenfield-* | sort -V | tail -n 1) && [ -n "$latest_version" ] && \
 #    "$latest_version/verapdf-install" "/opt/verapdf-auto-install-docker.xml"
 # RUN rm -rf /opt/verapdf-installer.zip /opt/verapdf-greenfield-*
-
-# Add non-privileged user
-# RUN addgroup -S purple && adduser -S -G purple purple
 
 # Copy package.json to working directory, perform npm install before copying the remaining files
 COPY package*.json ./
@@ -51,25 +49,24 @@ COPY package*.json ./
 # deletes the line containing "@govtechsg/purple-hats" from the package.json, if present
 RUN sed -i '/"@govtechsg\/purple-hats":/d' package.json
 
+## TODO switch running of Cypress as purple user
+# RUN addgroup -S purple && adduser -S -G purple purple
+# RUN chown -R purple:purple ./
+
+# Run everything after as non-privileged user.
+# USER purple
+
 # Environment variables for node and Playwright
 ENV NODE_ENV=dev
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="true"
 ENV PLAYWRIGHT_BROWSERS_PATH="/opt/ms-playwright"
 ENV PATH="/opt/verapdf:${PATH}"
-ENV FUNCTIONAL_TESTS_IN_DOCKER="true"
 
 # Install dependencies
 RUN npm ci
 
 # Copy the current directory contents into the container
 COPY . .
-
-
-## TODO switch running of Cypress as purple user
-# RUN chown -R purple:purple ./
-
-# Run everything after as non-privileged user.
-# USER purple
 
 # Compile typescript for cypress test repo
 RUN npm run build || true
@@ -78,12 +75,3 @@ RUN npm run build || true
 RUN chmod +x ./shell_scripts/host_websites_and_run_cypress.sh
 RUN chmod +x ./shell_scripts/start_docker.sh
 RUN chmod +x ./shell_scripts/stop_docker.sh
-
-# Environment variables for node and Playwright
-# ENV NODE_ENV=dev
-# ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="true"
-# ENV PLAYWRIGHT_BROWSERS_PATH="/opt/ms-playwright"
-# ENV PATH="/opt/verapdf:${PATH}"
-
-# Command to run the shell script and keep the container running
-CMD ["/bin/bash", "-c", "/app/shell_scripts/host_websites_and_run_cypress.sh && tail -f /dev/null"]
