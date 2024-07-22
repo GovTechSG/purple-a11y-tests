@@ -8,9 +8,6 @@ if [[ $(uname) == "Linux" ]]; then
   Xvfb_pid=$!
 fi
 
-# Build Cypress Tests
-npm run build
-
 ## Change to www
 cd ./www
 
@@ -40,12 +37,11 @@ echo "Python HTTP Server running at pid $python_pid"
 cd ..
 
 echo "Clone Purple A11y and install dependencies"
-npm install git+https://github.com/GovTechSG/purple-hats.git#master
+npm install "$@"
 
 # Navigate to purple-hats directory, install dependencies, and build
 cd node_modules/@govtechsg/purple-hats && \
     npm install && \
-    npx playwright install chromium && \
     npm run build || true && \
     cd ../../../
 

@@ -49,12 +49,11 @@ COPY package*.json ./
 # deletes the line containing "@govtechsg/purple-hats" from the package.json, if present
 RUN sed -i '/"@govtechsg\/purple-hats":/d' package.json
 
-## TODO switch running of Cypress as purple user
+# For Alpine
 # RUN addgroup -S purple && adduser -S -G purple purple
-# RUN chown -R purple:purple ./
 
-# Run everything after as non-privileged user.
-# USER purple
+# For Debian
+RUN addgroup --system purple && adduser --system --ingroup purple purple
 
 # Environment variables for node and Playwright
 ENV NODE_ENV=dev
@@ -62,16 +61,21 @@ ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD="true"
 ENV PLAYWRIGHT_BROWSERS_PATH="/opt/ms-playwright"
 ENV PATH="/opt/verapdf:${PATH}"
 
-# Install dependencies
-RUN npm ci
+# Give the current dir ownership to purple
+RUN chown -R purple:purple /app
 
-# Copy the current directory contents into the container
-COPY . .
+# Create the directory for Playwright browsers
+RUN mkdir -p "$PLAYWRIGHT_BROWSERS_PATH"
+# Give the dir ownership to purple
+RUN chown -R purple:purple "$PLAYWRIGHT_BROWSERS_PATH"
 
-# Compile typescript for cypress test repo
-RUN npm run build || true
+# Similarly for /nonexistent
+RUN mkdir -p /nonexistent
+RUN chown -R purple:purple /nonexistent
 
-# Make sure the shell scripts are executable
-RUN chmod +x ./shell_scripts/host_websites_and_run_cypress.sh
-RUN chmod +x ./shell_scripts/start_docker.sh
-RUN chmod +x ./shell_scripts/stop_docker.sh
+# Run everything after as non-privileged user for security
+USER purple
+
+# Install dependencies first to speed things up
+RUN npm ci --include=dev
+RUN npx playwright install chromium
