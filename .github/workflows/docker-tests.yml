@@ -24,7 +24,7 @@ jobs:
       - name: Run start_docker.sh script
         run: |
           chmod +x ./shell_scripts/start_docker.sh
-          ./shell_scripts/start_docker.sh "${{ github.event.inputs.A11Y_CHECKOUT || git+https://github.com/GovTechSG/purple-a11y.git#master }}"
+          ./shell_scripts/start_docker.sh "${{ github.event.inputs.A11Y_CHECKOUT }}"
 
       - name: Run stop_docker.sh script
         run: |
