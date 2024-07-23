@@ -25,7 +25,11 @@ jobs:
           chmod +x ./shell_scripts/start_docker.sh
           ./shell_scripts/start_docker.sh "${{ github.event.inputs.A11Y_CHECKOUT || 'git+https://github.com/GovTechSG/purple-a11y.git#master' }}"
         continue-on-error: true
-        
+
+      - name: Capture start_docker exit code
+        id: capture_exit_code
+        run: echo "exit_code=${{ steps.start_docker.outcome == 'failure' && '1' || '0' }}" >> $GITHUB_ENV
+
       - name: Run stop_docker.sh script
         run: |
           chmod +x ./shell_scripts/stop_docker.sh
@@ -41,3 +45,7 @@ jobs:
         with:
           name: cypress-reports
           path: cypress-reports.zip
+
+      - name: Fail job if start_docker.sh failed
+        if: env.exit_code == '1'
+        run: exit 1
