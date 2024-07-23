@@ -20,8 +20,13 @@ jobs:
           chmod +x ./shell_scripts/start_docker.sh
           ./shell_scripts/start_docker.sh
 
+      - name: Run stop_docker.sh script
+        run: |
+          chmod +x ./shell_scripts/stop_docker.sh
+          ./shell_scripts/stop_docker.sh
+
       - name: Zip Cypress reports folder
-        run: zip -r cypress-reports.zip ./cypress/reports/
+        run: zip -r cypress-reports.zip ./cypress
 
       - name: Upload Cypress reports as artifact
         uses: actions/upload-artifact@v2
