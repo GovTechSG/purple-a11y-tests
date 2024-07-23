@@ -1,5 +1,6 @@
 # purple-a11y-tests
-#### [Cypress](https://www.cypress.io/) functional tests for [Purple A11y](https://github.com/govtechsg/purple-a11y) to verify the correctness of Purple A11y CLI and integration module.
+
+[Cypress](https://www.cypress.io/) functional tests for [Purple A11y](https://github.com/govtechsg/purple-a11y) to verify the correctness of Purple A11y CLI and integration module.
 
 ## Run Locally
 #### Step 1: 
@@ -51,6 +52,13 @@ shell_scripts/stop_docker.sh
 colima stop
 ```
 
-## Limitations
- - Docker can only run chromium in headless mode, using chrome and edge for Purple A11y will not be tested
+## Run on GitHub Actions
+Test changes to tests by triggering Actions to run the test on any branch of `tests` or `purple-a11y`.
 
+- Go to [Actions](https://github.com/GovTechSG/purple-a11y-tests/actions/workflows/docker-tests.yml) tab.
+- Select `Run workflow` and choose the branch under `Use workflow from` to change the tests branch.
+- Optionally, the different git+URL of Purple A11y to change the branch of Purple A11y in `Checkout a specific purple a11y branch`.
+
+## Limitations
+ - Docker can only run Chromium in headless mode or through Xvfb (`xvfb-run`).
+ - The tests will not run successfully on Chrome or Edge in Docker.
