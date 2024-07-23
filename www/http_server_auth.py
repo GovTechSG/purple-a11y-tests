@@ -4,7 +4,8 @@ import logging
 import argparse
 
 # Add this at the beginning of AuthHTTPRequestHandler
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG) # Change the logging level to DEBUG or higher
+logging.basicConfig(level=logging.INFO)  # Change the logging level to INFO or higher
 
 # Define your username and password here
 USERNAME = "username"

@@ -16,5 +16,6 @@ docker exec purple-a11y-tests-instance tar -xzf /tmp/docker-cypress-test.tar.gz 
 
 # Run the tests
 docker exec -it purple-a11y-tests-instance ./shell_scripts/host_websites_and_run_cypress.sh "$@"
-# Access the container's bash shell
+
+# For debugging: Access the container's bash shell
 # docker exec -it purple-a11y-tests-instance /bin/bash

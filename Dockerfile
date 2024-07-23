@@ -1,47 +1,23 @@
-# Use Python 3.9 slim image
-FROM python:3.9-slim
+# Use Microsoft Playwright distribution
+FROM mcr.microsoft.com/playwright:v1.42.1-jammy
 
 # Set the working directory in the container
 WORKDIR /app
 
-# Installation of packages for purple-a11y and chromium in alpine
-# RUN apk add build-base gcompat g++ make python3 zip bash git chromium openjdk11-jre xvfb
-
-# Install necessary dependencies and Node.js
-RUN apt-get update && \
-    apt-get install -y curl gnupg lsb-release && \
-    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
-    apt-get install -y nodejs wget git-all xvfb libgbm-dev libgtk2.0-0 libgtk-3-0 libnotify-dev zip\
-    libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth dbus-x11 && \
+# Installation of packages for purple-a11y
+RUN apt-get update && apt-get install -y zip git tree openjdk-11-jdk xvfb libgbm-dev libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth dbus-x11 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# openjdk-17-jdk
-
 # Installation of VeraPDF
-RUN echo $'<?xml version="1.0" encoding="UTF-8" standalone="no"?> \n\
-<AutomatedInstallation langpack="eng"> \n\
-    <com.izforge.izpack.panels.htmlhello.HTMLHelloPanel id="welcome"/> \n\
-    <com.izforge.izpack.panels.target.TargetPanel id="install_dir"> \n\
-        <installpath>/opt/verapdf</installpath> \n\
-    </com.izforge.izpack.panels.target.TargetPanel> \n\
-    <com.izforge.izpack.panels.packs.PacksPanel id="sdk_pack_select"> \n\
-        <pack index="0" name="veraPDF GUI" selected="true"/> \n\
-        <pack index="1" name="veraPDF Batch files" selected="true"/> \n\
-        <pack index="2" name="veraPDF Validation model" selected="false"/> \n\
-        <pack index="3" name="veraPDF Documentation" selected="false"/> \n\
-        <pack index="4" name="veraPDF Sample Plugins" selected="false"/> \n\
-    </com.izforge.izpack.panels.packs.PacksPanel> \n\
-    <com.izforge.izpack.panels.install.InstallPanel id="install"/> \n\
-    <com.izforge.izpack.panels.finish.FinishPanel id="finish"/> \n\
-</AutomatedInstallation> ' >> /opt/verapdf-auto-install-docker.xml
+COPY verapdf-auto-install-docker.xml /opt/verapdf-auto-install-docker.xml
 
-# TODO: Install OpenJDK to install VeraPDF
-#RUN wget "https://github.com/GovTechSG/purple-a11y/releases/download/cache/verapdf-installer.zip" -P /opt
-#RUN unzip /opt/verapdf-installer.zip -d /opt
-#RUN latest_version=$(ls -d /opt/verapdf-greenfield-* | sort -V | tail -n 1) && [ -n "$latest_version" ] && \
-#    "$latest_version/verapdf-install" "/opt/verapdf-auto-install-docker.xml"
-# RUN rm -rf /opt/verapdf-installer.zip /opt/verapdf-greenfield-*
+# Install VeraPDF
+RUN wget "https://github.com/GovTechSG/purple-a11y/releases/download/cache/verapdf-installer.zip" -P /opt
+RUN unzip /opt/verapdf-installer.zip -d /opt
+RUN latest_version=$(ls -d /opt/verapdf-greenfield-* | sort -V | tail -n 1) && [ -n "$latest_version" ] && \
+    "$latest_version/verapdf-install" "/opt/verapdf-auto-install-docker.xml"
+RUN rm -rf /opt/verapdf-installer.zip /opt/verapdf-greenfield-*
 
 # Copy package.json to working directory, perform npm install before copying the remaining files
 COPY package*.json ./

@@ -2,12 +2,6 @@
 # host_websites_and_run_cypress.sh
 # This script hosts websites using Python HTTP server and runs Cypress tests concurrently
 
-if [[ $(uname) == "Linux" ]]; then
-  export DISPLAY=:99
-  Xvfb :99 -screen 0 1366x768x16 &
-  Xvfb_pid=$!
-fi
-
 ## Change to www
 cd ./www
 
@@ -17,21 +11,16 @@ python3 http_server_auth.py --bind 0.0.0.0 --port 8000 &
 # Save the PID of the background process
 python_pid=$!
 
+echo "Python HTTP Server running at pid $python_pid"
+
 # Function to kill the Python server
 cleanup() {
   echo "Killing the Python server with PID $python_pid"
   kill $python_pid
-
-  if [[ $(uname) == "Linux" ]]; then
-    echo "Killing the Xvfb server with PID $Xvfb_pid"
-    kill $Xvfb_pid
-  fi
 }
 
 # Trap the EXIT signal to run the cleanup function
 trap cleanup EXIT
-
-echo "Python HTTP Server running at pid $python_pid"
 
 # Navigate back to the root directory
 cd ..
@@ -51,4 +40,4 @@ echo "Starting Cypress tests..."
 mkdir -p ./purpleA11yResults
 
 # Run Cypress tests concurrently in the purple-a11y-tests directory
-npx cypress run
+xvfb-run --auto-servernum npx cypress run
