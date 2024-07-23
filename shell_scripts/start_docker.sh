@@ -13,8 +13,9 @@ docker run -dit --name purple-a11y-tests-instance --add-host=main.purplea11y.loc
 if [[ "$(uname)" == "Darwin" ]]; then
   tar --no-xattrs --no-mac-metadata --exclude='./node_modules' --exclude='./ms-playwright' --exclude='docker-cypress-test.tar.gz' -czf docker-cypress-test.tar.gz .
 else
-  tar --exclude='./node_modules' --exclude='./ms-playwright' --exclude='./docker-cypress-test.tar.gz' --exclude='./.git' --exclude='./logs' --exclude='./temp' -czf docker-cypress-test.tar.gz .
+  tar --warning=no-file-changed --exclude='./node_modules' --exclude='./ms-playwright' --exclude='./docker-cypress-test.tar.gz' --exclude='./.git' -czf docker-cypress-test.tar.gz .
 fi
+
 docker cp docker-cypress-test.tar.gz purple-a11y-tests-instance:/tmp
 docker exec purple-a11y-tests-instance tar -xzf /tmp/docker-cypress-test.tar.gz -C /app --warning=no-unknown-keyword
 

@@ -40,4 +40,8 @@ echo "Starting Cypress tests..."
 mkdir -p ./purpleA11yResults
 
 # Run Cypress tests concurrently in the purple-a11y-tests directory
-xvfb-run --auto-servernum npx cypress run
+if [[ "$(uname)" == "Darwin" ]]; then
+  npx cypress run
+else
+  xvfb-run --auto-servernum npx cypress run
+fi
