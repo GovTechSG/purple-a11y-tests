@@ -1,0 +1,30 @@
+name: Run Docker Tests and Upload Results
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Run start_docker.sh script
+        run: |
+          chmod +x ./shell_scripts/start_docker.sh
+          ./shell_scripts/start_docker.sh
+
+      - name: Zip Cypress reports folder
+        run: zip -r cypress-reports.zip ./cypress/reports/
+
+      - name: Upload Cypress reports as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-reports
+          path: cypress-reports.zip
