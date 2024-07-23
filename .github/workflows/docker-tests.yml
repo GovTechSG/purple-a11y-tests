@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       A11Y_CHECKOUT:
-        description: 'Checkout purple a11y branch'
+        description: 'Checkout a specific purple a11y branch'
         required: false
         default: 'git+https://github.com/GovTechSG/purple-a11y.git#master'
   push:
@@ -23,13 +23,10 @@ jobs:
 
       - name: Run start_docker.sh script
         run: |
-          chmod +x ./shell_scripts/start_docker.sh
-          ./shell_scripts/start_docker.sh "${{ github.event.inputs.A11Y_CHECKOUT }}"
-
-      - name: Run stop_docker.sh script
-        run: |
-          chmod +x ./shell_scripts/stop_docker.sh
-          ./shell_scripts/stop_docker.sh
+          - name: Run start_docker.sh script
+            run: |
+              chmod +x ./shell_scripts/start_docker.sh
+              ./shell_scripts/start_docker.sh "${{ github.event.inputs.A11Y_CHECKOUT || 'git+https://github.com/GovTechSG/purple-a11y.git#master' }}" - name: Run stop_docker.sh script
 
       - name: Zip Cypress reports folder
         run: zip -r cypress-reports.zip ./cypress
