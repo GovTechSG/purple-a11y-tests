@@ -34,6 +34,8 @@ cd node_modules/@govtechsg/purple-hats && \
     npm run build || true && \
     cd ../../../
 
+ls -al dist
+
 echo "Starting Cypress tests..."
 
 # Create exports directory
