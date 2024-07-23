@@ -19,9 +19,6 @@ fi
 docker cp docker-cypress-test.tar.gz purple-a11y-tests-instance:/tmp
 docker exec purple-a11y-tests-instance tar -xzf /tmp/docker-cypress-test.tar.gz -C /app --warning=no-unknown-keyword
 
-# List the directory contents
-docker exec purple-a11y-tests-instance ls -al
-
 # Run the tests
 docker exec purple-a11y-tests-instance ./shell_scripts/host_websites_and_run_cypress.sh "$@"
 
