@@ -6,7 +6,7 @@
 cd ./www
 
 # Run Python HTTP server in the www directory
-python3 http_server_auth.py --bind 0.0.0.0 --port 8000 &
+python3 http_server_auth.py --bind 0.0.0.0 --port 8000 > /dev/null 2>&1 &
 
 # Save the PID of the background process
 python_pid=$!
@@ -33,6 +33,9 @@ cd node_modules/@govtechsg/purple-hats && \
     npm install && \
     npm run build || true && \
     cd ../../../
+
+# npm run build tests repo
+npm run build
 
 echo "Starting Cypress tests..."
 
