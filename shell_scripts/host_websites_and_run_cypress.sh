@@ -34,7 +34,8 @@ cd node_modules/@govtechsg/purple-hats && \
     npm run build || true && \
     cd ../../../
 
-ls -al dist
+# npm run build tests repo
+npm run build
 
 echo "Starting Cypress tests..."
 
