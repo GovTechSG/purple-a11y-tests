@@ -23,11 +23,14 @@ jobs:
 
       - name: Run start_docker.sh script
         run: |
-          - name: Run start_docker.sh script
-            run: |
-              chmod +x ./shell_scripts/start_docker.sh
-              ./shell_scripts/start_docker.sh "${{ github.event.inputs.A11Y_CHECKOUT || 'git+https://github.com/GovTechSG/purple-a11y.git#master' }}" - name: Run stop_docker.sh script
-
+          chmod +x ./shell_scripts/start_docker.sh
+          ./shell_scripts/start_docker.sh "${{ github.event.inputs.A11Y_CHECKOUT || 'git+https://github.com/GovTechSG/purple-a11y.git#master' }}"
+      
+      - name: Run stop_docker.sh script
+        run: |
+          chmod +x ./shell_scripts/stop_docker.sh
+          ./shell_scripts/stop_docker.sh
+    
       - name: Zip Cypress reports folder
         run: zip -r cypress-reports.zip ./cypress
 
