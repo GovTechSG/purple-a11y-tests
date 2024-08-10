@@ -5,7 +5,7 @@ FROM mcr.microsoft.com/playwright:v1.42.1-jammy
 WORKDIR /app
 
 # Installation of packages for purple-a11y
-RUN apt-get update && apt-get install -y zip git tree openjdk-11-jdk xvfb libgbm-dev libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth dbus-x11 && \
+RUN apt-get update && apt-get install -y zip git tree openjdk-11-jdk xvfb libgbm-dev libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth dbus-x11 python-is-python3 libcurl4-openssl-dev build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 

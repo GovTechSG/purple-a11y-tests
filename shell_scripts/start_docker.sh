@@ -3,8 +3,13 @@ if [ "$(docker ps -a | grep purple-a11y-tests-instance)" ]; then
   docker rm -f purple-a11y-tests-instance
 fi
 
-# Build the Docker container
-docker build -t purple-a11y-tests .
+# Build the Docker container (Legacy builder)
+# docker build -t purple-a11y-tests .
+
+# Build the Docker container using buildx
+# Refer to MacOS (Colima) steps here to install buildx: 
+# https://github.com/abiosoft/colima/blob/main/docs/FAQ.md#installing-buildx
+docker buildx build -t purple-a11y-tests -f Dockerfile .
 
 # Add hostname mappings and run the container
 docker run -dit --name purple-a11y-tests-instance --add-host=main.purplea11y.local:0.0.0.0 --add-host=diffHostname.purplea11y.local:0.0.0.0 --add-host=docs.google.com:0.0.0.0 purple-a11y-tests
