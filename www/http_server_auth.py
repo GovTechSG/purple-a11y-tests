@@ -1,4 +1,5 @@
 from http.server import HTTPServer, SimpleHTTPRequestHandler
+from socketserver import ThreadingMixIn
 import base64
 import logging
 import argparse
@@ -53,6 +54,11 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         return False
 
 
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    """ Handle requests in a separate thread. """
+    daemon_threads = True  # This allows threads to be killed when the server exits
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--bind", "-b", metavar="ADDRESS", default="127.0.0.1",
@@ -62,7 +68,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     server_address = (args.bind, args.port)
-    httpd = HTTPServer(server_address, AuthHTTPRequestHandler)
+    httpd = ThreadedHTTPServer(server_address, AuthHTTPRequestHandler)
 
     server_url = f"http://{args.bind}:{args.port}/"
     print(f"Starting httpd server at: {server_url}")
