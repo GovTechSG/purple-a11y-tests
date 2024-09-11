@@ -1,5 +1,5 @@
 # Use Microsoft Playwright distribution
-FROM mcr.microsoft.com/playwright:v1.42.1-jammy
+FROM mcr.microsoft.com/playwright:v1.47.0-jammy
 
 # Set the working directory in the container
 WORKDIR /app
