@@ -1,5 +1,5 @@
 import { defineConfig } from 'cypress'
-import purpleA11yInit from '@govtechsg/purple-hats'
+import purpleA11yInit from '@govtechsg/oobee'
 import mochawesome from 'cypress-mochawesome-reporter/plugin'
 import { fileURLToPath } from 'url'
 import { dirname, resolve } from 'path'
@@ -146,7 +146,7 @@ const cliOptionsCustomFlow = {
   h: 'no',
 }
 
-const purpleA11yPath = 'node_modules/@govtechsg/purple-hats'
+const purpleA11yPath = 'node_modules/@govtechsg/oobee'
 const purpleA11yErrorsTxtPath = `${purpleA11yPath}/errors.txt`
 
 const getBlackListedPatterns = (
@@ -229,7 +229,13 @@ export default defineConfig({
       config.env.localTxtFileDirectory = localTxtFileDirectory
 
       mochawesome(on)
-      on('task', {
+        on('task', {
+          log(message) {
+            // Example:
+            // cy.task('log', 'This will be output to the terminal')
+            console.log('consoleLog:', message)
+            return null;
+        },
         getPurpleA11yScripts(): string {
           return purpleA11y.getScripts()
         },
