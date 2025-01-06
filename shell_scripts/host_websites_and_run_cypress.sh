@@ -29,7 +29,7 @@ echo "Clone Purple A11y and install dependencies"
 npm install "$@"
 
 # Navigate to purple-hats directory, install dependencies, and build
-cd node_modules/@govtechsg/purple-hats && \
+cd node_modules/@govtechsg/oobee && \
     npm install && \
     npm run build || true && \
     cd ../../../

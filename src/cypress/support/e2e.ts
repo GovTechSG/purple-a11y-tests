@@ -43,10 +43,20 @@ export const getCliCommand = (cliOptionsJson, toRunInPurpleA11yDirectly = false)
     }
 };
 
-const base64Decode = (data) => {
-    const compressedBytes = Uint8Array.from(atob(data), c => c.charCodeAt(0));
-    const jsonString = new TextDecoder().decode(compressedBytes);
-    return JSON.parse(jsonString);
+const base64DecodeChunkedWithDecoder = (data, chunkSize = 1024 * 1024) => {
+    const encodedChunks = data.split('.');
+    const decoder = new TextDecoder();
+    const jsonParts = [];
+
+    encodedChunks.forEach(chunk => {
+        for (let i = 0; i < chunk.length; i += chunkSize) {
+            const chunkPart = chunk.slice(i, i + chunkSize);
+            const decodedBytes = Uint8Array.from(atob(chunkPart), c => c.charCodeAt(0));
+            jsonParts.push(decoder.decode(decodedBytes, { stream: true }));
+        }
+    });
+
+    return JSON.parse(jsonParts.join(''));
 };
 
 Cypress.Commands.add('runPurpleA11yProcess', (cliOptionsJson) => {
@@ -134,8 +144,8 @@ Cypress.Commands.add('checkResultFilesCreated', (cliOptionsJson, purpleA11yResul
 Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResultFolder, isIntegrationMode = false) => {
     return cy.task('readFile', `${cliOptionsJson.e}/${purpleA11yResultFolder}/report.html`)
         .then((reportHtmlData: string) => {
-            const scanDataEncoded = reportHtmlData.match(/scanData\s*=\s*base64Decode\('([^']+)'\)/)[1];
-            const scanDataDecodedJson = base64Decode(scanDataEncoded);
+            const scanDataEncoded = reportHtmlData.match(/scanData\s*=\s*base64DecodeChunkedWithDecoder\('([^']+)'\)/)[1];
+            const scanDataDecodedJson = base64DecodeChunkedWithDecoder(scanDataEncoded);
 
             // TEST CASE: scanData.scanType should be according to the flag -c
             let expectedScanType;

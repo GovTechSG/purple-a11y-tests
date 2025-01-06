@@ -27,7 +27,7 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
 
     def do_HEAD(self):
         self.send_response(200)
-        self.send_header("Content-type", "text/html")
+        self.send_correct_headers(self.path)
         self.end_headers()
 
     def do_AUTHHEAD(self):
@@ -43,6 +43,9 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
                 self.do_AUTHHEAD()
                 self.wfile.write(b"Authentication required")
                 return
+        self.send_response(200)
+        self.send_correct_headers(self.path)
+        self.end_headers()
         super().do_GET()
 
     def requires_authentication(self):
@@ -52,6 +55,23 @@ class AuthHTTPRequestHandler(SimpleHTTPRequestHandler):
         if self.path.startswith("/basicauth") and self.path.endswith(".xml"):
             return True
         return False
+
+    def send_correct_headers(self, path):
+        """ Send correct Content-Type header based on the file extension. """
+        content_type, _ = self.get_custom_mime_type(path)
+        if content_type:
+            self.send_header("Content-Type", content_type)
+        else:
+            self.send_header("Content-Type", "application/octet-stream")
+
+    def get_custom_mime_type(self, path):
+        """ Return MIME type based on file extension. """
+        if path.endswith(".rss"):
+            return "application/rss+xml", None
+        elif path.endswith(".xml"):
+            return "application/xml", None
+        else:
+            return "text/html", None
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
