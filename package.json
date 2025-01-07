@@ -23,6 +23,7 @@
     "typescript": "^5.5.2"
   },
   "dependencies": {
-    "@govtechsg/oobee": "github:GovTechSG/purple-a11y#master"
+    "@govtechsg/oobee": "github:GovTechSG/purple-a11y#master",
+    "pako": "^2.1.0"
   }
 }

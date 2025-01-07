@@ -1,3 +1,4 @@
+import pako from 'pako';
 import 'cypress-mochawesome-reporter/register';
 
 Cypress.Commands.add("injectPurpleA11yScripts", () => {
@@ -43,20 +44,33 @@ export const getCliCommand = (cliOptionsJson, toRunInPurpleA11yDirectly = false)
     }
 };
 
-const base64DecodeChunkedWithDecoder = (data, chunkSize = 1024 * 1024) => {
-    const encodedChunks = data.split('.');
-    const decoder = new TextDecoder();
-    const jsonParts = [];
+const decompressJsonObject = (base64Gzipped, chunkSize = 65536) => {
+    const inflator = new pako.Inflate({ to: "string" });
 
-    encodedChunks.forEach(chunk => {
-        for (let i = 0; i < chunk.length; i += chunkSize) {
-            const chunkPart = chunk.slice(i, i + chunkSize);
-            const decodedBytes = Uint8Array.from(atob(chunkPart), c => c.charCodeAt(0));
-            jsonParts.push(decoder.decode(decodedBytes, { stream: true }));
+    let offset = 0;
+    const totalLength = base64Gzipped.length;
+
+    while (offset < totalLength) {
+        const chunk = base64Gzipped.slice(offset, offset + chunkSize);
+        offset += chunkSize;
+
+        const binaryString = atob(chunk);
+
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
         }
-    });
 
-    return JSON.parse(jsonParts.join(''));
+        const isLastChunk = offset >= totalLength;
+        inflator.push(bytes, isLastChunk);
+    }
+
+    if (inflator.err) {
+        throw new Error("Pako inflate error: " + inflator.msg);
+    }
+
+    const decompressedString = inflator.result;
+    return JSON.parse(decompressedString);
 };
 
 Cypress.Commands.add('runPurpleA11yProcess', (cliOptionsJson) => {
@@ -144,8 +158,8 @@ Cypress.Commands.add('checkResultFilesCreated', (cliOptionsJson, purpleA11yResul
 Cypress.Commands.add('checkReportHtmlScanData', (cliOptionsJson, purpleA11yResultFolder, isIntegrationMode = false) => {
     return cy.task('readFile', `${cliOptionsJson.e}/${purpleA11yResultFolder}/report.html`)
         .then((reportHtmlData: string) => {
-            const scanDataEncoded = reportHtmlData.match(/scanData\s*=\s*base64DecodeChunkedWithDecoder\('([^']+)'\)/)[1];
-            const scanDataDecodedJson = base64DecodeChunkedWithDecoder(scanDataEncoded);
+            const scanDataEncoded = reportHtmlData.match(/scanData\s*=\s*decompressJsonObject\('([^']+)'\)/)[1];
+            const scanDataDecodedJson = decompressJsonObject(scanDataEncoded);
 
             // TEST CASE: scanData.scanType should be according to the flag -c
             let expectedScanType;
