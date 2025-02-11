@@ -1,5 +1,6 @@
-# Use Microsoft Playwright distribution
-FROM mcr.microsoft.com/playwright:v1.47.0-jammy
+# Use Microsoft Playwright image as base image
+# Node version is v22
+FROM mcr.microsoft.com/playwright:v1.50.0-noble
 
 # Set the working directory in the container
 WORKDIR /app
